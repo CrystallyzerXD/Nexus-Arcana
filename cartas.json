@@ -1,0 +1,2045 @@
+[
+  {
+    "id": 1,
+    "name": "Luminos",
+    "stars": 1,
+    "rarity": "Normal",
+    "hp": 50,
+    "image": "luminos.png",
+    "description": "El más pequeño de los seres de luz. Frágil pero benévolo, su sola presencia calma a los que lo rodean.",
+    "attacks": [
+      {
+        "name": "Destello",
+        "type": "direct",
+        "value": 15,
+        "description": "Un rayo de luz pura y cegadora."
+      },
+      {
+        "name": "Aura sanadora",
+        "type": "regen",
+        "value": 14,
+        "turns": 3,
+        "description": "Suave aura de luz restauradora."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Frostling",
+    "stars": 2,
+    "rarity": "Normal",
+    "hp": 100,
+    "image": "frostling.png",
+    "description": "Una criatura menor de las tierras heladas. Pequeña pero tenaz, deja rastros de escarcha donde pisa.",
+    "attacks": [
+      {
+        "name": "Aliento gélido",
+        "type": "dot",
+        "value": 10,
+        "turns": 3,
+        "description": "Congela lentamente al objetivo turno a turno."
+      },
+      {
+        "name": "Escarcha",
+        "type": "direct",
+        "value": 25,
+        "description": "Cristales de hielo disparados a alta velocidad."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "October",
+    "stars": 3,
+    "rarity": "Raro",
+    "hp": 150,
+    "image": "october.png",
+    "description": "Una entidad de cuatro pinchos que emerge en noches de tormenta. Se dice que su movimiento es tan veloz que parece multiplicarse.",
+    "attacks": [
+      {
+        "name": "Corta cadenas",
+        "type": "direct",
+        "value": 38,
+        "description": "Sus 4 pinchos se mueven a gran velocidad."
+      },
+      {
+        "name": "Tajo veloz",
+        "type": "cumulative",
+        "value": 15,
+        "description": "Gana impulso con cada golpe consecutivo."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Thornveil",
+    "stars": 4,
+    "rarity": "Raro",
+    "hp": 200,
+    "image": "thornveil.png",
+    "description": "Un guardián vegetal de bosques antiguos. Sus raíces se extienden kilómetros y sienten cualquier intruso.",
+    "attacks": [
+      {
+        "name": "Espinas",
+        "type": "direct",
+        "value": 48,
+        "description": "Proyecta espinas afiladas como lanzas."
+      },
+      {
+        "name": "Regenerar",
+        "type": "regen",
+        "value": 25,
+        "turns": 3,
+        "description": "Las raíces lo sanan lentamente desde la tierra."
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Pyraxis",
+    "stars": 5,
+    "rarity": "Épico",
+    "hp": 250,
+    "image": "pyraxis.png",
+    "description": "Nacido en el núcleo de un volcán extinto, Pyraxis porta llamas que no se apagan ni bajo el agua más profunda.",
+    "attacks": [
+      {
+        "name": "Llamarada",
+        "type": "dot",
+        "value": 22,
+        "turns": 3,
+        "description": "Quemadura que persiste durante varios turnos."
+      },
+      {
+        "name": "Combustión",
+        "type": "direct",
+        "value": 65,
+        "description": "Explosión concentrada de fuego puro."
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Vexara",
+    "stars": 6,
+    "rarity": "Épico",
+    "hp": 300,
+    "image": "vexara.png",
+    "description": "Una entidad del caos puro. Sus acciones son impredecibles incluso para ella misma. El azar es su única ley.",
+    "attacks": [
+      {
+        "name": "Caos puro",
+        "type": "prob",
+        "value": 155,
+        "prob": 55,
+        "consequence": 75,
+        "description": "El resultado es completamente incierto."
+      },
+      {
+        "name": "Arremete",
+        "type": "direct",
+        "value": 115,
+        "selfDmg": 75,
+        "selfDmgType": "fixed",
+        "description": "Se consume a sí misma para golpear con fuerza devastadora."
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Umbrath",
+    "stars": 7,
+    "rarity": "Mítico",
+    "hp": 350,
+    "image": "umbrath.png",
+    "description": "Tejido de sombras puras, Umbrath se alimenta del miedo. Cuanto más oscuro el lugar, más poderoso se vuelve.",
+    "attacks": [
+      {
+        "name": "Drenaje vital",
+        "type": "regen",
+        "value": 32,
+        "turns": 3,
+        "description": "Absorbe la energía vital del adversario."
+      },
+      {
+        "name": "Golpe sombra",
+        "type": "direct",
+        "value": 85,
+        "description": "Un ataque desde la oscuridad más profunda."
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Glacior",
+    "stars": 8,
+    "rarity": "Mítico",
+    "hp": 400,
+    "image": "glacior.png",
+    "description": "Un coloso de hielo eterno. Cada vez que respira, el ambiente desciende varios grados. Ha sobrevivido eras enteras.",
+    "attacks": [
+      {
+        "name": "Tormenta ártica",
+        "type": "dot",
+        "value": 36,
+        "turns": 3,
+        "description": "Una tormenta helada que no cesa ni mengua."
+      },
+      {
+        "name": "Impacto glacial",
+        "type": "direct",
+        "value": 105,
+        "selfDmg": 35,
+        "selfDmgType": "fixed",
+        "description": "Un bloque de hielo macizo lanzado con fuerza devastadora."
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Whisperion",
+    "stars": 1,
+    "rarity": "Normal",
+    "hp": 50,
+    "image": "whisperion.png",
+    "description": "Un espíritu menor que habita en las grietas de paredes viejas. Solo se hace visible cuando quiere ser visto.",
+    "attacks": [
+      {
+        "name": "Susurro etéreo",
+        "type": "direct",
+        "value": 13,
+        "description": "Un ataque apenas perceptible pero real."
+      },
+      {
+        "name": "Eco sanador",
+        "type": "regen",
+        "value": 12,
+        "turns": 3,
+        "description": "Voces antiguas que susurran vida de vuelta."
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Nocthra",
+    "stars": 2,
+    "rarity": "Normal",
+    "hp": 100,
+    "image": "nocthra.png",
+    "description": "Una criatura nocturna que se mueve en silencio absoluto. Nadie la ha visto moverse, solo notan su rastro.",
+    "attacks": [
+      {
+        "name": "Zarpazo",
+        "type": "direct",
+        "value": 22,
+        "description": "Ataque rápido y silencioso en la oscuridad."
+      },
+      {
+        "name": "Maldición",
+        "type": "dot",
+        "value": 9,
+        "turns": 3,
+        "description": "Un mal silencioso que se arrastra turno a turno."
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Ashenblade",
+    "stars": 3,
+    "rarity": "Raro",
+    "hp": 150,
+    "image": "ashenblade.png",
+    "description": "Un guerrero forjado en cenizas de batalla. Cada cicatriz en su hoja guarda la memoria de un enemigo caído.",
+    "attacks": [
+      {
+        "name": "Hoja de ceniza",
+        "type": "cumulative",
+        "value": 20,
+        "description": "Cada corte es más profundo que el anterior."
+      },
+      {
+        "name": "Furia acumulada",
+        "type": "direct",
+        "value": 52,
+        "selfDmg": 25,
+        "selfDmgType": "fixed",
+        "description": "Canaliza todo su dolor en un golpe devastador que lo lastima."
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Solkarn",
+    "stars": 4,
+    "rarity": "Raro",
+    "hp": 200,
+    "image": "solkarn.png",
+    "description": "Guardián solar de las tierras altas. Su armadura de luz se recarga con cada amanecer y nunca se apaga del todo.",
+    "attacks": [
+      {
+        "name": "Rayo solar",
+        "type": "direct",
+        "value": 52,
+        "description": "Un haz de energía solar concentrada."
+      },
+      {
+        "name": "Destello cegador",
+        "type": "shield",
+        "value": 35,
+        "turns": 2,
+        "description": "La luz solar crea una barrera protectora temporal."
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Corvaxis",
+    "stars": 5,
+    "rarity": "Épico",
+    "hp": 250,
+    "image": "corvaxis.png",
+    "description": "Un cuervo de dimensiones imposibles. Sus plumas son tan afiladas como cuchillas y su vuelo rompe el sonido.",
+    "attacks": [
+      {
+        "name": "Picotazo fulgor",
+        "type": "prob",
+        "value": 105,
+        "prob": 60,
+        "consequence": 0,
+        "description": "Un golpe preciso que puede no conectar."
+      },
+      {
+        "name": "Plumas afiladas",
+        "type": "cumulative",
+        "value": 18,
+        "description": "Cada pasada deja marcas más profundas."
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Drakvel",
+    "stars": 6,
+    "rarity": "Épico",
+    "hp": 300,
+    "image": "drakvel.png",
+    "description": "Un dragón menor de las marismas ácidas. Su saliva disuelve el metal y sus escamas repelen cualquier hoja.",
+    "attacks": [
+      {
+        "name": "Aliento ácido",
+        "type": "dot",
+        "value": 28,
+        "turns": 3,
+        "description": "Veneno corrosivo que destruye desde adentro."
+      },
+      {
+        "name": "Embestida",
+        "type": "direct",
+        "value": 105,
+        "selfDmg": 75,
+        "selfDmgType": "fixed",
+        "description": "Una carga brutal sin frenos que daña a ambos por igual."
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Terravex",
+    "stars": 7,
+    "rarity": "Mítico",
+    "hp": 350,
+    "image": "terravex.png",
+    "description": "Un titán de piedra viva que camina desde el inicio de los tiempos. Su sola pisada abre grietas en la tierra.",
+    "attacks": [
+      {
+        "name": "Terremoto",
+        "type": "dot",
+        "value": 33,
+        "turns": 3,
+        "description": "El suelo no deja de temblar bajo sus pies."
+      },
+      {
+        "name": "Impacto sísmico",
+        "type": "direct",
+        "value": 92,
+        "description": "Un puñetazo que resquiebra la roca más dura."
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Skarnoth",
+    "stars": 8,
+    "rarity": "Mítico",
+    "hp": 400,
+    "image": "skarnoth.png",
+    "description": "Un señor de las maldiciones antiguas. Todo lo que toca queda marcado para siempre con su sello oscuro.",
+    "attacks": [
+      {
+        "name": "Maldición eterna",
+        "type": "dot",
+        "value": 22,
+        "turns": 0,
+        "description": "Una condena sin fin ni cura posible."
+      },
+      {
+        "name": "Golpe abismal",
+        "type": "prob",
+        "value": 190,
+        "prob": 50,
+        "consequence": 105,
+        "description": "Un golpe desde el abismo que puede volverse en su contra."
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Myren",
+    "stars": 1,
+    "rarity": "Normal",
+    "hp": 50,
+    "image": "myren.png",
+    "description": "Un hongo ambulante que libera esporas paralizantes. Lento pero persistente, su veneno hace el trabajo por él.",
+    "attacks": [
+      {
+        "name": "Esporas",
+        "type": "dot",
+        "value": 8,
+        "turns": 3,
+        "description": "Libera esporas que envenenan turno a turno."
+      },
+      {
+        "name": "Picadura",
+        "type": "direct",
+        "value": 14,
+        "description": "Clava sus espinas con sorprendente rapidez."
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Carapax",
+    "stars": 2,
+    "rarity": "Normal",
+    "hp": 100,
+    "image": "carapax.png",
+    "description": "Una criatura blindada que absorbe los golpes y devuelve energía a su cuerpo. Su caparazón es casi impenetrable.",
+    "attacks": [
+      {
+        "name": "Concha",
+        "type": "shield",
+        "value": 30,
+        "turns": 2,
+        "description": "Repliega su caparazón y reduce el daño recibido por 2 turnos."
+      },
+      {
+        "name": "Absorción",
+        "type": "direct",
+        "value": 18,
+        "selfHeal": 7,
+        "description": "Golpea y drena energía vital. Recupera 7 HP al impactar."
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Ferrox",
+    "stars": 3,
+    "rarity": "Raro",
+    "hp": 150,
+    "image": "ferrox.png",
+    "description": "Un golem de metal fundido que se lanza sin freno contra sus enemigos, ignorando el daño que se inflige a sí mismo.",
+    "attacks": [
+      {
+        "name": "Embestida feroz",
+        "type": "direct",
+        "value": 55,
+        "selfDmg": 30,
+        "selfDmgType": "fixed",
+        "description": "Carga imparable. Inflige gran daño pero consume 30 HP propios."
+      },
+      {
+        "name": "Coraza",
+        "type": "shield",
+        "value": 40,
+        "turns": 2,
+        "description": "Endurece su metal al límite, reduciendo el daño recibido por 2 turnos."
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Mordecai",
+    "stars": 4,
+    "rarity": "Raro",
+    "hp": 200,
+    "image": "mordecai.png",
+    "description": "Un hechicero maldito que porta sellos de oscuridad perpetua. Una vez que te marca, la maldición no cesa.",
+    "attacks": [
+      {
+        "name": "Maldición",
+        "type": "dot",
+        "value": 12,
+        "turns": 0,
+        "description": "Sello oscuro permanente. Inflige daño cada turno hasta que la carta muera."
+      },
+      {
+        "name": "Toque sombrío",
+        "type": "direct",
+        "value": 50,
+        "description": "Descarga de energía oscura concentrada."
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Crystallis",
+    "stars": 5,
+    "rarity": "Épico",
+    "hp": 250,
+    "image": "crystallis.png",
+    "description": "Una entidad de cristal puro que acumula energía con cada impacto y se protege con facetas irrompibles.",
+    "attacks": [
+      {
+        "name": "Escudo cristalino",
+        "type": "shield",
+        "value": 38,
+        "turns": 2,
+        "description": "Sus facetas desvían el daño durante 2 turnos."
+      },
+      {
+        "name": "Resonancia",
+        "type": "cumulative",
+        "value": 20,
+        "description": "Cada impacto hace vibrar sus cristales con más fuerza."
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Nethrix",
+    "stars": 6,
+    "rarity": "Épico",
+    "hp": 300,
+    "image": "nethrix.png",
+    "description": "Una entidad del caos que se regenera en la oscuridad y apuesta todo en un único golpe demoledor.",
+    "attacks": [
+      {
+        "name": "Regeneración caótica",
+        "type": "regen",
+        "value": 26,
+        "turns": 3,
+        "description": "La oscuridad la restaura durante 3 turnos."
+      },
+      {
+        "name": "Ruleta del abismo",
+        "type": "prob",
+        "value": 150,
+        "prob": 50,
+        "consequence": 85,
+        "description": "50%: golpe abismal. 50%: el abismo se lo devuelve."
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Xyrath",
+    "stars": 7,
+    "rarity": "Mítico",
+    "hp": 350,
+    "image": "xyrath.png",
+    "description": "Un ser de corrupción pura. Su presencia pudre todo lo que toca y su golpe directo sacude la realidad.",
+    "attacks": [
+      {
+        "name": "Corrupción eterna",
+        "type": "dot",
+        "value": 22,
+        "turns": 0,
+        "description": "Marca permanente de corrupción. El daño no cesa hasta que la carta caiga."
+      },
+      {
+        "name": "Golpe mítico",
+        "type": "direct",
+        "value": 90,
+        "description": "Un impacto que resquebraja el plano mismo."
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Aelion",
+    "stars": 8,
+    "rarity": "Mítico",
+    "hp": 400,
+    "image": "aelion.png",
+    "description": "Una entidad en constante ascensión. Su poder crece con cada batalla y su toque drena la vida de sus rivales.",
+    "attacks": [
+      {
+        "name": "Ascensión",
+        "type": "cumulative",
+        "value": 20,
+        "description": "Con cada uso su poder se multiplica sin techo visible."
+      },
+      {
+        "name": "Drenaje absoluto",
+        "type": "direct",
+        "value": 88,
+        "selfHeal": 25,
+        "description": "Absorbe la esencia del rival. Recupera 35 HP fijos al impactar."
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Kindrel",
+    "stars": 1,
+    "rarity": "Normal",
+    "hp": 50,
+    "image": "kindrel.png",
+    "description": "Una chispa viviente que crece con cada estallido. Cuanto más pelea, más intensa se vuelve su llama.",
+    "attacks": [
+      {
+        "name": "Llama vital",
+        "type": "regen",
+        "value": 12,
+        "turns": 2,
+        "description": "El calor interno restaura su energía por 2 turnos."
+      },
+      {
+        "name": "Brasas",
+        "type": "cumulative",
+        "value": 10,
+        "description": "Cada golpe aviva más las brasas."
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Vyrith",
+    "stars": 2,
+    "rarity": "Normal",
+    "hp": 100,
+    "image": "vyrith.png",
+    "description": "Un reptil de las ciénagas tóxicas. Escupe ácido a distancia y juega con la suerte en combate directo.",
+    "attacks": [
+      {
+        "name": "Escupitajo ácido",
+        "type": "dot",
+        "value": 11,
+        "turns": 3,
+        "description": "Ácido corrosivo que erosiona al objetivo turno a turno."
+      },
+      {
+        "name": "Lanzar",
+        "type": "prob",
+        "value": 32,
+        "prob": 65,
+        "consequence": 0,
+        "description": "Ataque impreciso. 65% de acertar; si falla, no ocurre nada."
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Sylvari",
+    "stars": 3,
+    "rarity": "Raro",
+    "hp": 150,
+    "image": "sylvari.png",
+    "description": "Un espíritu del bosque que canaliza la vida de la tierra. Con cada ataque gana fuerza, y el bosque lo sana en silencio.",
+    "attacks": [
+      {
+        "name": "Enraizar",
+        "type": "regen",
+        "value": 14,
+        "turns": 3,
+        "description": "Las raíces lo conectan a la tierra y lo sanan cada turno."
+      },
+      {
+        "name": "Crecimiento",
+        "type": "cumulative",
+        "value": 15,
+        "description": "Con cada golpe, las ramas se vuelven más afiladas."
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Gaethor",
+    "stars": 4,
+    "rarity": "Raro",
+    "hp": 200,
+    "image": "gaethor.png",
+    "description": "Un espíritu tahúr que vive de la incertidumbre. Puede devastar al rival o caer en su propia trampa.",
+    "attacks": [
+      {
+        "name": "Apuesta mortal",
+        "type": "prob",
+        "value": 95,
+        "prob": 45,
+        "consequence": 48,
+        "description": "45%: golpe devastador. 55%: el azar se vuelve en su contra."
+      },
+      {
+        "name": "Drenaje menor",
+        "type": "direct",
+        "value": 40,
+        "selfHeal": 10,
+        "description": "Extrae energía vital del objetivo. Recupera 10 HP al impactar."
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "name": "Zypheria",
+    "stars": 5,
+    "rarity": "Épico",
+    "hp": 250,
+    "image": "zypheria.png",
+    "description": "Un viento vampírico que corroe y absorbe a la vez. Su tormenta debilita mientras alimenta su propia esencia.",
+    "attacks": [
+      {
+        "name": "Vendaval tóxico",
+        "type": "dot",
+        "value": 25,
+        "turns": 3,
+        "description": "Viento corrosivo que desgasta al objetivo turno a turno."
+      },
+      {
+        "name": "Vampirismo",
+        "type": "direct",
+        "value": 58,
+        "selfHeal": 17,
+        "description": "Drena la esencia vital del rival. Recupera 17 HP al impactar."
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "name": "Kraxon",
+    "stars": 6,
+    "rarity": "Épico",
+    "hp": 300,
+    "image": "kraxon.png",
+    "description": "Un titán de energía acumulada. Mientras más turnos pasan sin golpear, más brutal se vuelve su siguiente ataque.",
+    "attacks": [
+      {
+        "name": "Acumulación",
+        "type": "cumulative",
+        "value": 18,
+        "description": "Concentra energía con cada ciclo. El daño escala sin límite aparente."
+      },
+      {
+        "name": "Demolición",
+        "type": "direct",
+        "value": 125,
+        "selfDmg": 75,
+        "selfDmgType": "fixed",
+        "description": "Golpe catastrófico que consume 75 HP propios."
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "name": "Mirael",
+    "stars": 7,
+    "rarity": "Mítico",
+    "hp": 350,
+    "image": "mirael.png",
+    "description": "Tejedora de destinos que puede anular por completo el daño recibido o asestar un golpe que reescribe el resultado del combate.",
+    "attacks": [
+      {
+        "name": "Manto etéreo",
+        "type": "shield",
+        "value": 50,
+        "turns": 2,
+        "description": "Teje un velo de destino que reduce el daño recibido a la mitad por 2 turnos."
+      },
+      {
+        "name": "Destino incierto",
+        "type": "prob",
+        "value": 120,
+        "prob": 68,
+        "consequence": 0,
+        "description": "55%: golpe que reescribe el combate. 45%: el hilo se rompe y no ocurre nada."
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "name": "Serath",
+    "stars": 8,
+    "rarity": "Mítico",
+    "hp": 400,
+    "image": "serath.png",
+    "description": "Un ser que roza la inmortalidad. Se regenera de forma permanente, pero cuando necesita acabar con todo, se consume en el proceso.",
+    "attacks": [
+      {
+        "name": "Inmortalidad",
+        "type": "regen",
+        "value": 16,
+        "turns": 0,
+        "description": "Regeneración permanente. Recupera HP cada turno mientras siga en pie."
+      },
+      {
+        "name": "Colapso",
+        "type": "direct",
+        "value": 155,
+        "selfDmg": 80,
+        "selfDmgType": "fixed",
+        "description": "Libera toda su energía acumulada. Golpe devastador a costa de 100 HP propios."
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "name": "Pitik",
+    "stars": 1,
+    "rarity": "Normal",
+    "hp": 50,
+    "image": "pitik.png",
+    "description": "Un ser diminuto y escurridizo que raramente falla. Su tamaño lo hace impredecible y sorprendentemente preciso.",
+    "attacks": [
+      {
+        "name": "Golpe certero",
+        "type": "prob",
+        "value": 20,
+        "prob": 78,
+        "consequence": 0,
+        "description": "78% de acertar un golpe sólido. Si falla, no pasa nada."
+      },
+      {
+        "name": "Picoteo",
+        "type": "dot",
+        "value": 7,
+        "turns": 3,
+        "description": "Deja una herida pequeña que duele más con el tiempo."
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "name": "Torchik",
+    "stars": 2,
+    "rarity": "Normal",
+    "hp": 100,
+    "image": "torchik.png",
+    "description": "Una chispa con temperamento explosivo. Sus ataques son imprecisos pero cuando conectan, queman con insistencia.",
+    "attacks": [
+      {
+        "name": "Llamazo",
+        "type": "prob",
+        "value": 30,
+        "prob": 72,
+        "consequence": 0,
+        "description": "72% de impactar con una llamarada. Si falla, la llama se apaga sola."
+      },
+      {
+        "name": "Brasa persistente",
+        "type": "dot",
+        "value": 10,
+        "turns": 3,
+        "description": "Una brasa que arde lentamente bajo la piel del rival."
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "name": "Quillax",
+    "stars": 3,
+    "rarity": "Raro",
+    "hp": 150,
+    "image": "quillax.png",
+    "description": "Un erizo arcano cuyas púas segregan un veneno sin antídoto conocido. Una vez marcado, el rival no puede escapar.",
+    "attacks": [
+      {
+        "name": "Veneno sin cura",
+        "type": "dot",
+        "value": 10,
+        "turns": 0,
+        "description": "Veneno permanente. Daña cada turno hasta que la carta caiga."
+      },
+      {
+        "name": "Lanzapúas",
+        "type": "direct",
+        "value": 36,
+        "description": "Dispara sus púas con fuerza sorprendente."
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "name": "Vaelith",
+    "stars": 4,
+    "rarity": "Raro",
+    "hp": 200,
+    "image": "vaelith.png",
+    "description": "Un guardián inmortal que no cesa de recuperarse. Paciente y resistente, desgasta a sus rivales con el tiempo.",
+    "attacks": [
+      {
+        "name": "Voluntad eterna",
+        "type": "regen",
+        "value": 10,
+        "turns": 0,
+        "description": "Regeneración permanente. Se recupera cada turno hasta caer."
+      },
+      {
+        "name": "Golpe de guardián",
+        "type": "direct",
+        "value": 48,
+        "description": "Un golpe firme y calculado sin margen de error."
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "name": "Ashveil",
+    "stars": 5,
+    "rarity": "Épico",
+    "hp": 250,
+    "image": "ashveil.png",
+    "description": "Una nube de cenizas arcanas que envenena el aire a su alrededor. Su presencia basta para consumir lentamente al rival.",
+    "attacks": [
+      {
+        "name": "Ceniza perpetua",
+        "type": "dot",
+        "value": 16,
+        "turns": 0,
+        "description": "Nube de ceniza permanente. Inflige daño cada turno sin cesar."
+      },
+      {
+        "name": "Colapso de ceniza",
+        "type": "direct",
+        "value": 62,
+        "description": "Condensa toda la ceniza en un impacto sólido."
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "name": "Malveth",
+    "stars": 6,
+    "rarity": "Épico",
+    "hp": 300,
+    "image": "malveth.png",
+    "description": "Un portador de plaga eterna. Su veneno no tiene fin y cuando apuesta todo, los resultados son catastróficos.",
+    "attacks": [
+      {
+        "name": "Plaga eterna",
+        "type": "dot",
+        "value": 18,
+        "turns": 0,
+        "description": "Plaga permanente sin remedio. Daña cada turno hasta el final."
+      },
+      {
+        "name": "Explosión viral",
+        "type": "prob",
+        "value": 132,
+        "prob": 55,
+        "consequence": 0,
+        "description": "60%: explosión de energía viral devastadora. 40%: el patógeno se dispersa sin efecto."
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "name": "Aetherion",
+    "stars": 7,
+    "rarity": "Mítico",
+    "hp": 350,
+    "image": "aetherion.png",
+    "description": "Un ser de luz eterna que nunca deja de regenerarse. Cuando necesita acabar rápido, libera toda su esencia de golpe.",
+    "attacks": [
+      {
+        "name": "Luz eterna",
+        "type": "regen",
+        "value": 15,
+        "turns": 0,
+        "description": "Regeneración eterna. La luz lo restaura cada turno mientras exista."
+      },
+      {
+        "name": "Nova final",
+        "type": "direct",
+        "value": 118,
+        "selfDmg": 70,
+        "selfDmgType": "fixed",
+        "description": "Libera su núcleo de luz de golpe. Daño masivo a costa de 70 HP propios."
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "name": "Oblivion",
+    "stars": 8,
+    "rarity": "Mítico",
+    "hp": 400,
+    "image": "oblivion.png",
+    "description": "Una entidad que borra la realidad con cada golpe. Cuanto más pelea, más cerca está de borrar todo rastro del rival.",
+    "attacks": [
+      {
+        "name": "Borrar",
+        "type": "cumulative",
+        "value": 16,
+        "description": "Cada uso erosiona más la existencia del rival. El daño crece sin techo."
+      },
+      {
+        "name": "Vacío absoluto",
+        "type": "direct",
+        "value": 98,
+        "selfHeal": 28,
+        "description": "Absorbe la esencia borrada del rival. Recupera 28 HP fijos al impactar."
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "name": "Vesprel",
+    "stars": 1,
+    "rarity": "Normal",
+    "hp": 50,
+    "image": "vesprel.png",
+    "description": "Un insecto acorazado de las cavernas profundas. Prefiere defenderse antes de atacar, esperando el momento justo.",
+    "attacks": [
+      {
+        "name": "Quitina",
+        "type": "shield",
+        "value": 22,
+        "turns": 2,
+        "description": "Su caparazón de quitina absorbe parte del daño entrante por 2 turnos."
+      },
+      {
+        "name": "Aguijón",
+        "type": "direct",
+        "value": 13,
+        "description": "Clava su aguijón con precisión calculada."
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "name": "Mirrak",
+    "stars": 2,
+    "rarity": "Normal",
+    "hp": 100,
+    "image": "mirrak.png",
+    "description": "Una criatura de los pantanos que drena la vitalidad de sus presas mientras se mantiene con vida.",
+    "attacks": [
+      {
+        "name": "Succionar",
+        "type": "direct",
+        "value": 19,
+        "selfHeal": 7,
+        "description": "Extrae vitalidad del rival. Recupera 7 HP al impactar."
+      },
+      {
+        "name": "Pulso vital",
+        "type": "regen",
+        "value": 11,
+        "turns": 2,
+        "description": "Canaliza la energía robada para sanar sus propias heridas."
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "name": "Dawnspire",
+    "stars": 3,
+    "rarity": "Raro",
+    "hp": 150,
+    "image": "dawnspire.png",
+    "description": "Un guardián del amanecer que alterna entre protección y ofensiva. Espera el momento ideal para golpear.",
+    "attacks": [
+      {
+        "name": "Manto del alba",
+        "type": "shield",
+        "value": 35,
+        "turns": 2,
+        "description": "La luz del amanecer forma una barrera protectora por 2 turnos."
+      },
+      {
+        "name": "Rayo del alba",
+        "type": "prob",
+        "value": 58,
+        "prob": 62,
+        "consequence": 0,
+        "description": "62%: haz de luz que atraviesa defensas. 38%: el rayo se dispersa sin impactar."
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "name": "Darkscale",
+    "stars": 4,
+    "rarity": "Raro",
+    "hp": 200,
+    "image": "darkscale.png",
+    "description": "Un dragón menor de escamas oscuras que acumula poder en silencio antes de soltar un golpe que puede ser su perdición.",
+    "attacks": [
+      {
+        "name": "Escamas afiladas",
+        "type": "cumulative",
+        "value": 16,
+        "description": "Cada impacto endurece y afila sus escamas para el siguiente."
+      },
+      {
+        "name": "Fauces del caos",
+        "type": "prob",
+        "value": 92,
+        "prob": 55,
+        "consequence": 46,
+        "description": "55%: mordisco devastador. 45%: las fauces se cierran sobre sí mismo."
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "name": "Vorith",
+    "stars": 5,
+    "rarity": "Épico",
+    "hp": 250,
+    "image": "vorith.png",
+    "description": "Un berserker que se cura mientras lucha. Sacrifica defensa por pura agresión, confiando en su capacidad de regenerarse.",
+    "attacks": [
+      {
+        "name": "Furia regenerante",
+        "type": "regen",
+        "value": 22,
+        "turns": 3,
+        "description": "La adrenalina del combate acelera su recuperación por 3 turnos."
+      },
+      {
+        "name": "Arremetida salvaje",
+        "type": "direct",
+        "value": 70,
+        "selfDmg": 38,
+        "selfDmgType": "fixed",
+        "description": "Golpe brutal sin control. Inflige gran daño pero consume 38 HP propios."
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "name": "Synthex",
+    "stars": 6,
+    "rarity": "Épico",
+    "hp": 300,
+    "image": "synthex.png",
+    "description": "Un constructo arcano que crece con cada ciclo de combate. Su barrera de energía le da tiempo para alcanzar potencial máximo.",
+    "attacks": [
+      {
+        "name": "Escudo arcano",
+        "type": "shield",
+        "value": 42,
+        "turns": 2,
+        "description": "Barrera de energía arcana que reduce el daño recibido por 2 turnos."
+      },
+      {
+        "name": "Sobrecarga",
+        "type": "cumulative",
+        "value": 16,
+        "description": "Acumula energía con cada ciclo. El daño escala sin límite aparente."
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "name": "Venomyr",
+    "stars": 7,
+    "rarity": "Mítico",
+    "hp": 350,
+    "image": "venomyr.png",
+    "description": "Un ser tóxico de dimensiones caóticas. Su veneno es implacable y su golpe final puede devastar o destruirse a sí mismo.",
+    "attacks": [
+      {
+        "name": "Toxina mítica",
+        "type": "dot",
+        "value": 38,
+        "turns": 3,
+        "description": "Veneno de potencia mítica que corroe durante 3 turnos."
+      },
+      {
+        "name": "Colapso tóxico",
+        "type": "prob",
+        "value": 175,
+        "prob": 60,
+        "consequence": 88,
+        "description": "60%: explosión tóxica que destruye al rival. 40%: el colapso lo consume a él."
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "name": "Morvael",
+    "stars": 8,
+    "rarity": "Mítico",
+    "hp": 400,
+    "image": "morvael.png",
+    "description": "Un titán impenetrable que corroe todo lo que toca. Su defensa es absoluta y su veneno, interminable.",
+    "attacks": [
+      {
+        "name": "Fortaleza mítica",
+        "type": "shield",
+        "value": 50,
+        "turns": 2,
+        "description": "Barrera de titanio mítico. Reduce el daño recibido a la mitad por 2 turnos."
+      },
+      {
+        "name": "Corrosión total",
+        "type": "dot",
+        "value": 42,
+        "turns": 3,
+        "description": "Corrosión extrema que destruye al rival turno a turno durante 3 turnos."
+      }
+    ]
+  },
+  {
+    "id": 49,
+    "name": "Glibbet",
+    "stars": 1,
+    "rarity": "Normal",
+    "hp": 50,
+    "image": "glibbet.png",
+    "description": "Una criatura insignificante que casi siempre falla. Casi. Una vez cada diez golpes, algo explota sin explicación.",
+    "attacks": [
+      {
+        "name": "Golpe torpe",
+        "type": "direct",
+        "value": 12,
+        "description": "Un manotazo descoordinado pero real."
+      },
+      {
+        "name": "Furia oculta",
+        "type": "prob",
+        "value": 60,
+        "prob": 25,
+        "consequence": 0,
+        "description": "Solo el 25% de veces conecta, pero cuando lo hace, duele de verdad."
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "name": "Moswick",
+    "stars": 2,
+    "rarity": "Normal",
+    "hp": 100,
+    "image": "moswick.png",
+    "description": "Un musgo viviente de crecimiento lento pero constante. Su regeneración es más larga que la de cualquier otro ser conocido.",
+    "attacks": [
+      {
+        "name": "Brote lento",
+        "type": "regen",
+        "value": 7,
+        "turns": 5,
+        "description": "Se regenera cada turno durante 5 turnos seguidos."
+      },
+      {
+        "name": "Mordisco",
+        "type": "direct",
+        "value": 20,
+        "description": "Un mordisco húmedo pero efectivo."
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "name": "Plagax",
+    "stars": 3,
+    "rarity": "Raro",
+    "hp": 150,
+    "image": "plagax.png",
+    "description": "Un portador de plaga de larga incubación. Su infección no duele al principio, pero cinco turnos después ya es tarde.",
+    "attacks": [
+      {
+        "name": "Plaga lenta",
+        "type": "dot",
+        "value": 11,
+        "turns": 5,
+        "description": "Infección de largo aliento. Inflige daño durante 5 turnos."
+      },
+      {
+        "name": "Zarpazo",
+        "type": "direct",
+        "value": 33,
+        "description": "Ataque directo con garras contaminadas."
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "name": "Stonark",
+    "stars": 4,
+    "rarity": "Raro",
+    "hp": 200,
+    "image": "stonark.png",
+    "description": "Un gólem de piedra que carga su puño durante turnos enteros. Cuando suelta el golpe acumulado, las probabilidades casi no importan.",
+    "attacks": [
+      {
+        "name": "Fortaleza pétrea",
+        "type": "shield",
+        "value": 38,
+        "turns": 2,
+        "description": "Endurece sus capas exteriores reduciendo el daño por 2 turnos."
+      },
+      {
+        "name": "Puño sísmico",
+        "type": "prob",
+        "value": 140,
+        "prob": 20,
+        "consequence": 0,
+        "description": "Solo el 20% de probabilidad, pero si conecta el suelo tiembla. Si falla, el momento se pierde sin consecuencias."
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "name": "Valdris",
+    "stars": 5,
+    "rarity": "Épico",
+    "hp": 250,
+    "image": "valdris.png",
+    "description": "Un vampiro de energía que se restaura durante varios turnos mientras roba vida al rival. Cuanto más dura la pelea, mejor para él.",
+    "attacks": [
+      {
+        "name": "Pulso vital",
+        "type": "regen",
+        "value": 17,
+        "turns": 5,
+        "description": "Canaliza energía robada. Se regenera 5 turnos seguidos."
+      },
+      {
+        "name": "Drenar",
+        "type": "direct",
+        "value": 52,
+        "selfHeal": 10,
+        "description": "Extrae fuerza vital del rival. Recupera 10 HP al impactar."
+      }
+    ]
+  },
+  {
+    "id": 54,
+    "name": "Siphrix",
+    "stars": 6,
+    "rarity": "Épico",
+    "hp": 300,
+    "image": "siphrix.png",
+    "description": "Un parásito dimensional de alto nivel. Su capacidad de robar vida supera con creces a cualquier otro ser conocido.",
+    "attacks": [
+      {
+        "name": "Vampirismo extremo",
+        "type": "direct",
+        "value": 62,
+        "selfHeal": 18,
+        "description": "Absorción masiva. Recupera 18 HP al impactar."
+      },
+      {
+        "name": "Escudo energético",
+        "type": "shield",
+        "value": 40,
+        "turns": 2,
+        "description": "Barrera de energía robada que absorbe el daño entrante por 2 turnos."
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "name": "Chronath",
+    "stars": 7,
+    "rarity": "Mítico",
+    "hp": 350,
+    "image": "chronath.png",
+    "description": "Un ser fuera del tiempo que se regenera eternamente. Nueve de cada diez veces su golpe pasa sin rozar. La décima vez, nadie sobrevive para contarlo.",
+    "attacks": [
+      {
+        "name": "Flujo eterno",
+        "type": "regen",
+        "value": 16,
+        "turns": 0,
+        "description": "El tiempo lo restaura cada turno de forma permanente."
+      },
+      {
+        "name": "Golpe del destino",
+        "type": "prob",
+        "value": 155,
+        "prob": 75,
+        "consequence": 0,
+        "description": "Solo el 10% de probabilidad. Si conecta, el daño es devastador. Si falla, el tiempo retrocede sin consecuencias."
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "name": "Dualvex",
+    "stars": 8,
+    "rarity": "Mítico",
+    "hp": 400,
+    "image": "dualvex.png",
+    "description": "Una dualidad viva: se regenera y pudre al mismo tiempo. Ambas fuerzas se alimentan mutuamente y no se anulan jamás.",
+    "attacks": [
+      {
+        "name": "Ciclo vital",
+        "type": "regen",
+        "value": 22,
+        "turns": 5,
+        "description": "Se restaura cada turno durante 5 turnos. Vida y muerte coexisten."
+      },
+      {
+        "name": "Corrosión profunda",
+        "type": "dot",
+        "value": 20,
+        "turns": 5,
+        "description": "Infecta al rival con una corrosión que dura 5 turnos completos."
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "name": "Trikka",
+    "stars": 1,
+    "rarity": "Normal",
+    "hp": 50,
+    "image": "trikka.png",
+    "description": "Una criatura escurridiza que se aferra a la vida mientras sangra al rival poco a poco.",
+    "attacks": [
+      {
+        "name": "Arañazo vital",
+        "type": "direct",
+        "value": 12,
+        "selfHeal": 4,
+        "description": "Rasguña y absorbe. Recupera 4 HP al impactar."
+      },
+      {
+        "name": "Latido",
+        "type": "regen",
+        "value": 10,
+        "turns": 2,
+        "description": "Se estabiliza brevemente y recupera energía por 2 turnos."
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "name": "Drizzik",
+    "stars": 2,
+    "rarity": "Normal",
+    "hp": 100,
+    "image": "drizzik.png",
+    "description": "Una lagartija de lluvia ácida que gotea veneno de larga duración. Pequeña, pero su marca dura más de lo que parece.",
+    "attacks": [
+      {
+        "name": "Goteo ácido",
+        "type": "dot",
+        "value": 8,
+        "turns": 5,
+        "description": "Veneno de lenta disolución. Daña durante 5 turnos."
+      },
+      {
+        "name": "Mordisco reptil",
+        "type": "direct",
+        "value": 18,
+        "description": "Un mordisco rápido e inesperado."
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "name": "Lunaris",
+    "stars": 3,
+    "rarity": "Raro",
+    "hp": 150,
+    "image": "lunaris.png",
+    "description": "Una entidad ligada al ciclo lunar. Su poder crece con la luna llena y mengua en la nueva, pero nunca desaparece.",
+    "attacks": [
+      {
+        "name": "Luz lunar",
+        "type": "regen",
+        "value": 14,
+        "turns": 3,
+        "description": "La luna la bendice y restaura su esencia noche a noche."
+      },
+      {
+        "name": "Rayo de plata",
+        "type": "direct",
+        "value": 42,
+        "description": "Un destello de luz lunar comprimida."
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "name": "Emberveil",
+    "stars": 4,
+    "rarity": "Raro",
+    "hp": 200,
+    "image": "emberveil.png",
+    "description": "Una entidad envuelta en llamas frías. El fuego que la rodea no quema sino congela, un fenómeno sin explicación.",
+    "attacks": [
+      {
+        "name": "Velo de brasas",
+        "type": "shield",
+        "value": 35,
+        "turns": 2,
+        "description": "Las llamas frías crean una barrera protectora por 2 turnos."
+      },
+      {
+        "name": "Chispa explosiva",
+        "type": "direct",
+        "value": 50,
+        "description": "Una descarga de energía repentina y concentrada."
+      }
+    ]
+  },
+  {
+    "id": 61,
+    "name": "Thornyx",
+    "stars": 5,
+    "rarity": "Épico",
+    "hp": 250,
+    "image": "thornyx.png",
+    "description": "Una planta carnívora que lanza espinas envenenadas y acumula furia con cada turno. Su paciencia es mortal.",
+    "attacks": [
+      {
+        "name": "Espinas venenosas",
+        "type": "dot",
+        "value": 16,
+        "turns": 5,
+        "description": "Veneno de lenta agonía. El objetivo sufre daño durante 5 turnos."
+      },
+      {
+        "name": "Furia vegetal",
+        "type": "cumulative",
+        "value": 18,
+        "description": "Acumula energía con cada ataque. El daño crece con cada uso."
+      }
+    ]
+  },
+  {
+    "id": 62,
+    "name": "Vorthen",
+    "stars": 6,
+    "rarity": "Épico",
+    "hp": 300,
+    "image": "vorthen.png",
+    "description": "Un vórtice de energía que combina defensa y ataque prolongado. Se protege mientras infecta lentamente al rival.",
+    "attacks": [
+      {
+        "name": "Escudo del vórtice",
+        "type": "shield",
+        "value": 42,
+        "turns": 2,
+        "description": "La energía giratoria absorbe el daño por 2 turnos."
+      },
+      {
+        "name": "Plaga mayor",
+        "type": "dot",
+        "value": 20,
+        "turns": 5,
+        "description": "Infección prolongada de alta potencia. Dura 5 turnos enteros."
+      }
+    ]
+  },
+  {
+    "id": 63,
+    "name": "Astralyx",
+    "stars": 7,
+    "rarity": "Mítico",
+    "hp": 350,
+    "image": "astralyx.png",
+    "description": "Una entidad astral que crece sin límite y se cura al golpear. Cuanto más tiempo tiene, más imposible se vuelve de derrotar.",
+    "attacks": [
+      {
+        "name": "Ascenso astral",
+        "type": "cumulative",
+        "value": 18,
+        "description": "Su poder se multiplica con cada golpe. Sin techo conocido."
+      },
+      {
+        "name": "Impacto astral",
+        "type": "direct",
+        "value": 92,
+        "selfHeal": 22,
+        "description": "Golpe que devuelve energía a su núcleo. Recupera 28 HP fijos."
+      }
+    ]
+  },
+  {
+    "id": 64,
+    "name": "Nullvore",
+    "stars": 8,
+    "rarity": "Mítico",
+    "hp": 400,
+    "image": "nullvore.png",
+    "description": "Un devorador de existencias que corroe de forma permanente y apuesta su propia realidad en cada golpe final.",
+    "attacks": [
+      {
+        "name": "Vacío eterno",
+        "type": "dot",
+        "value": 24,
+        "turns": 0,
+        "description": "Corrosión permanente que no cesa hasta que uno de los dos caiga."
+      },
+      {
+        "name": "Destino final",
+        "type": "prob",
+        "value": 130,
+        "prob": 70,
+        "consequence": 115,
+        "description": "45%: golpe que borra al rival. 55%: la nada se vuelve contra él mismo."
+      }
+    ]
+  },
+  {
+    "id": 65,
+    "name": "Guo",
+    "description": "Un pequeno oso del bosque que recorre senderos recolectando frutas. Su aspecto adorable oculta una sorprendente determinacion cuando llega el momento de defender su cosecha.",
+    "stars": 1,
+    "rarity": "Normal",
+    "hp": 50,
+    "image": "guo.png",
+    "attacks": [
+      {
+        "name": "Lluvia de manzana",
+        "type": "dot",
+        "value": 10,
+        "turns": 3,
+        "description": "Lanza varias manzanas al enemigo."
+      },
+      {
+        "name": "Carga frutal",
+        "type": "direct",
+        "value": 15,
+        "selfDmg": 5,
+        "selfDmgType": "fixed",
+        "description": "Embiste al oponente."
+      }
+    ]
+  },
+  {
+    "id": 66,
+    "name": "Lucat",
+    "stars": 2,
+    "rarity": "Normal",
+    "hp": 100,
+    "image": "lucat.png",
+    "description": "Fantasma felino de una antigua orden mística. Domina la regeneración espiritual y la invocación de guerreros ancestrales.",
+    "attacks": [
+      {
+        "name": "Ritual Místico",
+        "type": "regen",
+        "value": 12,
+        "turns": 3,
+        "description": "Medita y regenera cada turno."
+      },
+      {
+        "name": "Invocador de almas",
+        "type": "direct",
+        "value": 30,
+        "description": "Llama a los guerreros Lucats para atacar."
+      }
+    ]
+  },
+  {
+    "id": 67,
+    "name": "Norax",
+    "description": "Un escarabajo venenoso que habita pantanos y bosques humedos. Bajo su caparazon espinoso esconde toxinas letales y una colonia de larvas siempre lista para devorar a sus presas.",
+    "stars": 3,
+    "rarity": "Raro",
+    "hp": 150,
+    "image": "norax.png",
+    "attacks": [
+      {
+        "name": "Picadura venenosa",
+        "type": "dot",
+        "value": 15,
+        "turns": 4,
+        "description": "Envenena al oponente al transmitir sus fluidos."
+      },
+      {
+        "name": "Plaga de larvas",
+        "type": "dot",
+        "value": 24,
+        "turns": 2,
+        "description": "Escupe larvas hacia el oponente."
+      }
+    ]
+  },
+  {
+    "id": 68,
+    "name": "Kronix",
+    "description": "Un coloso electromecánico controlado por un brillante científico oso. Sus circuitos canalizan tormentas eléctricas mientras sus sistemas hidráulicos convierten cada golpe en una fuerza devastadora.",
+    "stars": 4,
+    "rarity": "Raro",
+    "hp": 200,
+    "image": "kronix.png",
+    "attacks": [
+      {
+        "name": "Sobrecarga eléctrica",
+        "type": "direct",
+        "value": 30,
+        "description": "Libera una descarga masiva de energía desde su núcleo, electrocutando a todos los enemigos cercanos y sobrecargando sus sistemas."
+      },
+      {
+        "name": "Puño hidráulico",
+        "type": "direct",
+        "value": 40,
+        "selfDmg": 10,
+        "selfDmgType": "fixed",
+        "description": "Un puñetazo impulsado por presión extrema que impacta como una prensa industrial, destrozando todo a su paso."
+      }
+    ]
+  },
+  {
+    "id": 69,
+    "name": "Lumis",
+    "description": "Un lobo luminoso que vaga guiado por el resplandor de las estrellas. Aunque es ciego, percibe el mundo a través de la energía que fluye a su alrededor.",
+    "stars": 5,
+    "rarity": "Épico",
+    "hp": 250,
+    "image": "lumis.png",
+    "attacks": [
+      {
+        "name": "Destello sagrado",
+        "type": "dot",
+        "value": 24,
+        "turns": 3,
+        "description": "Libera una ráfaga de luz celestial que quema a los enemigos y deja un resplandor persistente sobre el campo de batalla."
+      },
+      {
+        "name": "Mordida astral",
+        "type": "direct",
+        "value": 68,
+        "description": "Una dentellada cargada con energía de las estrellas que atraviesa la defensa del rival y desata un impacto devastador."
+      }
+    ]
+  },
+  {
+    "id": 70,
+    "name": "Gorvak",
+    "description": "Una bestia bicéfala nacida para la caza. Sus dos cabezas atacan con una coordinación perfecta, mientras su gigantesca cola puede derribar incluso a los enemigos más resistentes.",
+    "stars": 6,
+    "rarity": "Épico",
+    "hp": 300,
+    "image": "gorvak.png",
+    "attacks": [
+      {
+        "name": "Mordida doble",
+        "type": "direct",
+        "value": 70,
+        "selfDmg": 20,
+        "selfDmgType": "fixed",
+        "description": "Las dos cabezas atacan al unísono, desgarrando al enemigo desde distintos ángulos."
+      },
+      {
+        "name": "Cola demoledora",
+        "type": "direct",
+        "value": 90,
+        "selfDmg": 50,
+        "selfDmgType": "fixed",
+        "description": "Un latigazo colosal capaz de lanzar por los aires a cualquier rival que se cruce en su camino."
+      }
+    ]
+  },
+  {
+    "id": 71,
+    "name": "Umbrak",
+    "description": "Una entidad nacida de la oscuridad primordial. Donde aparece, la luz se desvanece y el suelo parece abrirse hacia un abismo sin fondo.",
+    "stars": 7,
+    "rarity": "Mítico",
+    "hp": 350,
+    "image": "umbrak.png",
+    "attacks": [
+      {
+        "name": "Oscuridad eterna",
+        "type": "direct",
+        "value": 90,
+        "selfHeal": 5,
+        "description": "El enemigo se queda sin visión y aprovecha en atacar."
+      },
+      {
+        "name": "Fosa de abismo",
+        "type": "prob",
+        "value": 125,
+        "prob": 75,
+        "consequence": 0,
+        "description": "Abre un enorme agujero que emerge del suelo en el cual atrapa a sus presas."
+      }
+    ]
+  },
+  {
+    "id": 72,
+    "name": "Tianxu",
+    "description": "Un antiguo dragon celestial que gobierna las tormentas desde las alturas. Su presencia invoca lluvia, truenos y la fuerza indomable de los cielos.",
+    "stars": 8,
+    "rarity": "Mítico",
+    "hp": 400,
+    "image": "tianxu.png",
+    "attacks": [
+      {
+        "name": "Llamado de las nubes",
+        "type": "prob",
+        "value": 155,
+        "prob": 70,
+        "consequence": 0,
+        "description": "Realiza un llamado a la naturaleza que puede ocasionar un diluvio con truenos devastador."
+      },
+      {
+        "name": "Renacer espiritual",
+        "type": "regen",
+        "value": 50,
+        "turns": 1,
+        "description": "Absorbe energia del entorno."
+      }
+    ]
+  },
+  {
+    "id": 73,
+    "name": "Ler",
+    "stars": 1,
+    "rarity": "Normal",
+    "hp": 50,
+    "image": "ler.png",
+    "description": "Un pequeño reptil ígneo de temperamento impredecible. Aunque parece inofensivo, sus llamas pueden desatar explosiones devastadoras cuando pierde el control.",
+    "attacks": [
+      {
+        "name": "Cabezaso flameante",
+        "type": "direct",
+        "value": 16,
+        "description": "Golpea con la cabeza con gran energía."
+      },
+      {
+        "name": "Llama nova",
+        "type": "prob",
+        "value": 80,
+        "prob": 15,
+        "consequence": 45,
+        "description": "Se expande de golpe con sus llamas. Si falla colapsa sobre sí mismo."
+      }
+    ]
+  },
+  {
+    "id": 74,
+    "name": "Boom",
+    "stars": 2,
+    "rarity": "Normal",
+    "hp": 100,
+    "image": "boom.png",
+    "description": "Una bomba viviente tan peligrosa como entusiasta. Sus puños explosivos y su autodestrucción lo convierten en una amenaza impredecible.",
+    "attacks": [
+      {
+        "name": "Puñete bomba",
+        "type": "direct",
+        "value": 20,
+        "description": "Golpea con sus puños explosivos."
+      },
+      {
+        "name": "Autodestrucción",
+        "type": "direct",
+        "value": 100,
+        "selfDmg": 200,
+        "selfDmgType": "fixed",
+        "description": "Genera una gran explosión aniquilándose en el proceso."
+      }
+    ]
+  },
+  {
+    "id": 75,
+    "name": "Flinger",
+    "stars": 3,
+    "rarity": "Raro",
+    "hp": 150,
+    "image": "flinger.png",
+    "description": "Un panda envuelto en llamas eternas cuya presencia impone respeto. Bajo su apariencia serena arde una fuerza capaz de convertir cualquier campo de batalla en un mar de fuego.",
+    "attacks": [
+      {
+        "name": "Abrazo infernal",
+        "type": "prob",
+        "value": 70,
+        "prob": 75,
+        "consequence": 0,
+        "description": "Si conecta, arde. Si falla, solo fue un abrazo."
+      },
+      {
+        "name": "Zarpazo ardiente",
+        "type": "prob",
+        "value": 85,
+        "prob": 60,
+        "consequence": 0,
+        "description": "Consecuencia de una furia incontrolable."
+      }
+    ]
+  },
+  {
+    "id": 76,
+    "name": "Hedinx",
+    "stars": 4,
+    "rarity": "Raro",
+    "hp": 200,
+    "image": "hedinx.png",
+    "description": "Una cabeza errante condenada a flotar entre tormentas eternas. Su mirada vacía infunde terror incluso a las criaturas más antiguas del cielo.",
+    "attacks": [
+      {
+        "name": "Mirada hueca",
+        "type": "direct",
+        "value": 45,
+        "description": "Una mirada vacía que aplasta la voluntad."
+      },
+      {
+        "name": "Susurro maldito",
+        "type": "dot",
+        "value": 18,
+        "turns": 3,
+        "description": "Murmura algo indescifrable que pudre la mente por turnos."
+      }
+    ]
+  },
+  {
+    "id": 77,
+    "name": "Fargret",
+    "stars": 5,
+    "rarity": "Épico",
+    "hp": 250,
+    "image": "fargret.png",
+    "description": "Un espectro hambriento que vaga entre los mundos. Sus garras atraviesan la materia y arrancan fragmentos del alma de quienes se cruzan en su camino.",
+    "attacks": [
+      {
+        "name": "Desprende almas",
+        "type": "direct",
+        "value": 35,
+        "selfHeal": 20,
+        "description": "Divide cuerpo y alma temporalmente para consumir su energía vital."
+      },
+      {
+        "name": "Garra mortífera",
+        "type": "direct",
+        "value": 62,
+        "description": "Se vuelve tangible para atravesarte con sus garras."
+      }
+    ]
+  },
+  {
+    "id": 78,
+    "name": "Algor",
+    "stars": 6,
+    "rarity": "Épico",
+    "hp": 300,
+    "image": "algor.png",
+    "description": "Un viajero de las estrellas cuya forma desafía toda lógica. Sus tentáculos perciben dimensiones ocultas y reaccionan antes de que el peligro exista.",
+    "attacks": [
+      {
+        "name": "Pinchazo final",
+        "type": "direct",
+        "value": 75,
+        "description": "Pinchazo certero en el punto exacto donde todo termina."
+      },
+      {
+        "name": "Extrangulación",
+        "type": "direct",
+        "value": 40,
+        "selfHeal": 25,
+        "description": "Aplasta tanto que absorbe la energía de su víctima."
+      }
+    ]
+  },
+  {
+    "id": 79,
+    "name": "Wormix",
+    "stars": 7,
+    "rarity": "Mítico",
+    "hp": 350,
+    "image": "wormix.png",
+    "description": "Un titán devorador que emerge de las profundidades para consumir todo a su paso. Cada bocado lo vuelve más grande, más fuerte y más difícil de detener.",
+    "attacks": [
+      {
+        "name": "Mordida del vacío",
+        "type": "direct",
+        "value": 96,
+        "description": "Arranca un pedazo de todo aquello que tenga al frente."
+      },
+      {
+        "name": "Consumo creciente",
+        "type": "cumulative",
+        "value": 21,
+        "description": "Absorbe más y más poder conforme ataca."
+      }
+    ]
+  },
+  {
+    "id": 80,
+    "name": "Pekitiel",
+    "stars": 8,
+    "rarity": "Mítico",
+    "hp": 400,
+    "image": "pekitiel.png",
+    "description": "Una cacatúa cósmica nacida entre nebulosas. Sus plumas canalizan la energía de las estrellas y su vuelo deja cicatrices luminosas en el firmamento.",
+    "attacks": [
+      {
+        "name": "Plumas de nebulosa",
+        "type": "dot",
+        "value": 42,
+        "turns": 3,
+        "description": "Deja rastro de energía cósmica que quema por turnos."
+      },
+      {
+        "name": "Colapso de constelación",
+        "type": "prob",
+        "value": 116,
+        "prob": 80,
+        "consequence": 32,
+        "description": "Alinea las estrellas, pero si falla se desorienta. Alta probabilidad de un golpe devastador."
+      }
+    ]
+  },
+  {
+    "id": 98,
+    "name": "Semiaza",
+    "stars": 9,
+    "rarity": "Especial",
+    "hp": 500,
+    "image": "semiaza.png",
+    "description": "Un ser etéreo de múltiples ojos que existe entre dimensiones. Ver su verdadera forma es ver el fin de todo.",
+    "attacks": [
+      {
+        "name": "Visión temporal",
+        "type": "shield",
+        "value": 50,
+        "turns": 2,
+        "description": "Un parpadeo interdimensional bloquea el daño entrante por 2 turnos."
+      },
+      {
+        "name": "Desvanecimiento etéreo",
+        "type": "prob",
+        "value": 250,
+        "prob": 45,
+        "consequence": 120,
+        "description": "Una apuesta peligrosa entre dimensiones."
+      }
+    ]
+  },
+  {
+    "id": 99,
+    "name": "Nexus",
+    "stars": 9,
+    "rarity": "Especial",
+    "hp": 500,
+    "image": "nexus.png",
+    "description": "El punto de convergencia entre todos los mundos. Nexus no pertenece a ningún plano pero los conecta a todos.",
+    "attacks": [
+      {
+        "name": "Vinculación",
+        "type": "regen",
+        "value": 50,
+        "turns": 3,
+        "description": "Absorbe energía dimensional para restaurarse."
+      },
+      {
+        "name": "Ruptura dimensional",
+        "type": "prob",
+        "value": 310,
+        "prob": 40,
+        "consequence": 155,
+        "description": "Rasga el tejido de la realidad con consecuencias impredecibles."
+      }
+    ]
+  }
+]

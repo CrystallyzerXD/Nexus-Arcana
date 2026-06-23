@@ -1,0 +1,43 @@
+/* ═══════════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#04040c;
+  --surface:#0b0b1a;
+  --surface2:#111124;
+  --surface3:#181830;
+  --border:#252545;
+  --border2:#3a3a65;
+  --text:#ede5d8;
+  --text-muted:#7a7a9e;
+  --text-dim:#3e3e62;
+  --p1:#4a90d9;--p1g:#2a6ab0;
+  --p2:#d95a5a;--p2g:#a03030;
+  --boss:#cc3333;--boss-glow:#ff4444;
+  --gold:#e8c46a;--gold2:#b8942a;
+  --purple:#8b5fd4;--purple2:#5a3a9a;
+  --green:#4ac97a;
+  --orange:#ef9f27;
+  --rarity-normal:#5a90d9;
+  --rarity-raro:#4ac97a;
+  --rarity-epico:#ef9f27;
+  --rarity-mitico:#9b59f7;
+  --rarity-especial:#f76eb2;
+  --rarity-legendario:#ff4444;
+  --font-title:'Cinzel',serif;
+  --font-body:'Crimson Pro',serif;
+  --radius:10px;
+  --shadow:0 4px 24px #00000066;
+}
+
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:15px;
+  line-height:1.5;
+  overflow-x:hidden;
+}
+

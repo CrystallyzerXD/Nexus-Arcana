@@ -1,0 +1,1574 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="icon.ico" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nexus Arcana</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/01-tokens.css">
+  <link rel="stylesheet" href="css/02-base.css">
+  <link rel="stylesheet" href="css/03-screens.css">
+  <link rel="stylesheet" href="css/04-game.css">
+  <link rel="stylesheet" href="css/05-profile.css">
+  <link rel="stylesheet" href="css/06-tournaments.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+</head>
+<body>
+
+<!-- Nebula + Starfield -->
+<div id="nebula-bg"></div>
+<canvas id="stars-canvas"></canvas>
+<canvas id="titleBgCanvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0"></canvas>
+
+<!-- Splash screen de carga -->
+<div id="splashScreen">
+  <div class="splash-cards-area" id="splashCardsArea"></div>
+  <div class="splash-center">
+    <div class="splash-logo">Nexus Arcana</div>
+    <div class="splash-dev">by Crystallyzer</div>
+    <div class="splash-tip" id="splashTip">
+      <span class="splash-tip-label">✦ PRO TIP</span>
+      <span id="splashTipText"></span>
+    </div>
+    <button id="splashStartBtn" onclick="splashStart()" style="display:none;margin-top:1.4rem;padding:.65rem 2.2rem;font-family:var(--font-title);font-size:13px;letter-spacing:.18em;background:linear-gradient(135deg,#7b5fd4,#5a3fa8);color:#fff;border:none;border-radius:10px;cursor:pointer;box-shadow:0 0 18px rgba(123,95,212,.5);animation:splash-tip-in .5s ease both">COMENZAR</button>
+  </div>
+</div>
+
+<!-- ══ AUDIO WIDGET ══ -->
+<div id="audio-widget">
+  <!-- Panel desplegable -->
+  <div id="audio-panel">
+    <button id="audioToggle" onclick="toggleAudio()" title="Reproducir/Pausar">▶</button>
+    <span id="audio-label" style="font-size:11px;color:var(--text-muted);letter-spacing:.05em">BGM</span>
+    <input type="range" id="volSlider" min="0" max="1" step="0.05" value="0.4" oninput="setVolume(this.value)" title="Volumen">
+    <button id="muteBtn" onclick="toggleMute()" title="Silenciar">🔊</button>
+  </div>
+  <!-- Botón de música (siempre visible) -->
+  <button id="audio-toggle-btn" onclick="toggleAudioPanel()" title="Música">🎵</button>
+  <audio id="bgm" loop preload="none">
+    <source src="bgm.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<!-- ══════════════════════════════════════
+     TITLE SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="titleScreen">
+  <div class="home-header" role="button" tabindex="0" onclick="openProfileScreen()" aria-label="Ver perfil">
+    <div class="home-hdr-avatar" id="homeHdrAvatar"></div>
+    <div class="home-hdr-info">
+      <div class="home-hdr-row">
+        <span class="home-hdr-name" id="homeHdrName">Jugador</span>
+        <span class="home-hdr-lvl" id="homeHdrLvl">Nv 1</span>
+      </div>
+      <div class="home-hdr-xpwrap"><div class="home-hdr-xp" id="homeHdrXP" style="width:0%"></div></div>
+    </div>
+    <div class="home-hdr-coins">🪙 <span id="homeHdrCoins">0</span> &nbsp;<span style="color:#9b59f7">🔮 <span class="frag-count">0</span></span></div>
+    <button class="home-hdr-gear" onclick="event.stopPropagation();openSettings()" aria-label="Ajustes">⚙️</button>
+  </div>
+
+  <div class="title-content">
+  <div class="title-logo" style="margin-bottom:.2rem">Nexus Arcana</div>
+  <div class="title-glow"></div>
+  <div class="title-sub" style="margin-bottom:.2rem">JUEGO DE CARTAS</div>
+  <div style="font-size:9px;color:var(--text-dim);letter-spacing:.14em;font-family:var(--font-title);opacity:.55;margin-bottom:.3rem">Beta 1.1</div>
+  <div class="title-divider"><span>✦</span></div>
+
+  <div class="mode-cards">
+    <div class="mode-card title-mode-card" onclick="showBotModeScreen()">
+      <div class="title-mode-icon"><span style="font-size:22px">🤖</span></div>
+      <div style="flex:1">
+        <div class="mode-card-title">Un jugador</div>
+        <div class="mode-card-desc">Vs Bot · Estándar, FFA, Endless y más</div>
+      </div>
+      <span class="title-mode-arrow">›</span>
+    </div>
+    <div class="mode-card title-mode-card" onclick="showScreen('multiplayerScreen')">
+      <div class="title-mode-icon"><span style="font-size:22px">⚔️</span></div>
+      <div style="flex:1">
+        <div class="mode-card-title">Multijugador</div>
+        <div class="mode-card-desc">Local o por WiFi</div>
+      </div>
+      <span class="title-mode-arrow">›</span>
+    </div>
+  </div>
+
+  <div class="title-secondary-grid" style="margin-top:8px">
+    <button class="title-sec-btn" onclick="showScreen('rulesScreen')">
+      <span style="font-size:18px">📖</span>
+      <span>Cómo jugar</span>
+    </button>
+    <button class="title-sec-btn" onclick="openWiki()">
+      <span style="font-size:18px">🃏</span>
+      <span>Guía de cartas</span>
+    </button>
+  </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     PROFILE SCREEN
+══════════════════════════════════════ -->
+
+<!-- Tutorial in-game overlay (outside .screen, always on top) -->
+<div id="tutGameOverlay">
+  <div id="tutGameSpotlight"></div>
+  <div id="tutGameArrow"></div>
+  <div id="tutGameTooltip">
+    <div class="tutg-step" id="tutGStep"></div>
+    <div class="tutg-title" id="tutGTitle"></div>
+    <div class="tutg-body" id="tutGBody"></div>
+    <div id="tutGActions"></div>
+  </div>
+</div>
+
+<div class="screen" id="tutCompleteScreen">
+  <div style="text-align:center;max-width:320px;width:100%;">
+    <div style="font-size:64px;margin-bottom:1rem">🎓</div>
+    <div style="font-family:var(--font-title);font-size:20px;letter-spacing:.14em;color:#e0d8ff;margin-bottom:.5rem">Tutorial completado</div>
+    <div style="font-family:var(--font-title);font-size:10px;letter-spacing:.18em;color:var(--purple);margin-bottom:1.6rem">NEXUS ARCANA</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:1.8rem">Ya conoces lo esencial del juego.<br>¡Mucha suerte en tus partidas!</div>
+    <div style="margin-bottom:1.4rem;text-align:left">
+      <label style="display:block;font-family:var(--font-title);font-size:9px;letter-spacing:.16em;color:var(--text-dim);margin-bottom:.5rem">¿CÓMO TE LLAMAMOS?</label>
+      <input id="tutNameInput" type="text" maxlength="18" placeholder="Tu nombre"
+        style="width:100%;background:var(--surface2);border:.5px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:15px;padding:9px 12px;outline:none;box-sizing:border-box;transition:border-color .15s"
+        onfocus="this.style.borderColor='var(--purple)'" onblur="this.style.borderColor=''"
+      >
+    </div>
+    <button onclick="_tutSaveName()" style="width:100%;padding:.65rem;background:none;border:.5px solid rgba(255,255,255,.15);border-radius:12px;color:var(--text-muted);font-family:var(--font-title);font-size:10px;letter-spacing:.1em;cursor:pointer">¡Empezar! →</button>
+  </div>
+</div>
+
+<div class="screen" id="missionsScreen">
+  <div class="profile-wrap">
+    <div class="profile-top-bar">
+      <div style="width:32px"></div>
+      <span class="profile-screen-title">MISIONES DIARIAS</span>
+      <div style="width:32px"></div>
+    </div>
+    <div class="missions-reset-bar" id="missionsResetLabel">Se reinician en —</div>
+    <div id="missionsGrid" class="missions-grid"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:.15rem;margin-top:.5rem">
+      <button class="btn btn-secondary" onclick="openSolitario()">🃏 Reto del Día</button>
+      <span id="solWinsLabel" style="font-size:.72rem;color:#aaa">Completados: 0</span>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="profileScreen">
+  <div class="profile-wrap">
+
+    <div class="profile-top-bar">
+      <div style="width:32px"></div>
+      <span class="profile-screen-title">PERFIL</span>
+      <div style="width:32px"></div>
+    </div>
+
+    <div class="profile-card">
+      <div class="profile-avatar" id="profileAvatar">?</div>
+      <div class="profile-identity">
+        <div class="profile-name-row">
+          <span class="profile-name" id="profileNameDisplay">Jugador</span>
+          <button class="profile-edit-btn" onclick="_profileStartEdit()" id="profileEditBtn">✏️</button>
+        </div>
+        <input class="profile-name-input" id="profileNameInput" type="text" maxlength="20"
+          placeholder="Tu nombre" style="display:none"
+          onblur="_profileSaveName()" onkeydown="if(event.key==='Enter')_profileSaveName()">
+        <div class="profile-rank" id="profileRank">Aprendiz</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:.3rem;flex-shrink:0">
+        <div class="profile-level-badge">
+          <div class="profile-level-badge-num" id="profileLvl">1</div>
+          <div class="profile-level-badge-lbl">NVL</div>
+        </div>
+        <button onclick="openCosmeticsScreen()" style="font-size:9px;letter-spacing:.08em;padding:.25rem .5rem;border-radius:8px;background:var(--surface2);border:.5px solid var(--border);color:var(--text-muted);cursor:pointer;white-space:nowrap">🎨 ESTILO</button>
+      </div>
+    </div>
+
+    <div class="profile-level-section">
+      <div class="profile-level-row">
+        <span class="profile-level-label" id="profileXPLabel">0 / 500 XP</span>
+        <span class="profile-level-label" id="profileXPPct">0%</span>
+      </div>
+      <div class="profile-xp-track">
+        <div class="profile-xp-bar" id="profileXPBar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="profile-grid6" style="grid-template-columns:1fr 1fr">
+      <div class="profile-cell"><div class="profile-cell-icon">🔥</div><div class="profile-cell-val" id="profileStreak">0</div><div class="profile-cell-lbl">Racha actual</div></div>
+      <div class="profile-cell"><div class="profile-cell-icon">🏆</div><div class="profile-cell-val" id="profileBestStreak">0</div><div class="profile-cell-lbl">Mejor racha</div></div>
+    </div>
+    <div class="profile-grid6" style="grid-template-columns:1fr 1fr">
+    </div>
+
+    <div class="profile-fav-card" id="profileFavCard" style="display:none">
+      <div class="profile-fav-label">CARTA FAVORITA</div>
+      <div class="profile-fav-name" id="profileFavName">—</div>
+      <div class="profile-fav-sub" id="profileFavSub"></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="showScreen('titleScreen')" style="align-self:center;margin-top:.2rem">← Volver</button>
+
+  </div>
+</div>
+
+<div id="cosmeticsModal" style="display:none;position:fixed;inset:0;z-index:700;background:rgba(4,4,12,.88);backdrop-filter:blur(6px);align-items:flex-end;justify-content:center;padding:0">
+  <div style="background:var(--surface);border-radius:18px 18px 0 0;width:100%;max-width:480px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.1rem .5rem;border-bottom:.5px solid var(--border);flex-shrink:0">
+      <span style="font-family:var(--font-title);font-size:12px;letter-spacing:.18em;color:var(--text)">PERSONALIZAR</span>
+      <button onclick="closeCosmeticsModal()" style="background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;line-height:1;padding:.2rem .4rem">✕</button>
+    </div>
+    <div class="cosm-preview-card" style="flex-shrink:0;margin:.7rem 1rem .4rem">
+      <div style="position:relative;flex-shrink:0">
+        <div id="cosmPrevAv" style="width:46px;height:46px;border-radius:50%;background:var(--surface2);overflow:hidden;display:flex;align-items:center;justify-content:center">
+          <img id="cosmPrevAvImg" src="" alt="" style="width:100%;height:100%;image-rendering:pixelated;object-fit:contain;display:none">
+          <span id="cosmPrevAvFb" style="font-size:16px;color:var(--text-muted)">?</span>
+        </div>
+        <div id="cosmPrevFrame" class="profile-avatar-frame"></div>
+      </div>
+      <div>
+        <div style="font-size:13px;color:var(--text)" id="cosmPrevName">Jugador</div>
+        <div id="cosmPrevTitle" style="font-size:10px;margin-top:3px;padding:2px 8px;border-radius:20px;display:inline-block"></div>
+      </div>
+    </div>
+    <div class="cosm-tabs" style="margin:0 1rem;flex-shrink:0">
+      <div class="cosm-tab active" onclick="switchCosmTab('avatares',this)">AVATARES</div>
+      <div class="cosm-tab" onclick="switchCosmTab('marcos',this)">MARCOS</div>
+      <div class="cosm-tab" onclick="switchCosmTab('temas',this)">TEMAS</div>
+      <div class="cosm-tab" onclick="switchCosmTab('ruleta',this)">RULETA</div>
+      <div class="cosm-tab" onclick="switchCosmTab('titulos',this)">TÍTULOS</div>
+    </div>
+    <div style="overflow-y:auto;padding:.6rem 1rem 1.2rem;flex:1">
+      <div class="cosm-panel active" id="cp-avatares"></div>
+      <div class="cosm-panel" id="cp-marcos"></div>
+      <div class="cosm-panel" id="cp-temas"></div>
+      <div class="cosm-panel" id="cp-titulos"></div>
+      <div class="cosm-panel" id="cp-ruleta"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Level-up popup -->
+<div id="levelUpOverlay" style="display:none;position:fixed;inset:0;z-index:800;background:rgba(4,4,12,.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+  <div class="levelup-box">
+    <div class="levelup-shine"></div>
+    <div class="levelup-label">¡SUBISTE DE NIVEL!</div>
+    <div class="levelup-num" id="levelUpNum">2</div>
+    <div class="levelup-rank" id="levelUpRank"></div>
+    <div class="levelup-xp" id="levelUpXP"></div>
+    <button class="levelup-close" onclick="document.getElementById('levelUpOverlay').style.display='none'">Continuar ▶</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     STATS SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="statsScreen">
+  <div class="rules-header">
+    <div class="rules-header-spacer"></div>
+    <div class="rules-header-center">
+      <div class="rules-header-title">📊 ESTADÍSTICAS</div>
+      <div class="rules-header-sub">🪙 <span id="st-coins">0</span> monedas &nbsp;·&nbsp; 🔮 <span class="frag-count">0</span> fragmentos</div>
+    </div>
+    <button onclick="confirmResetStats()" style="background:none;border:.5px solid var(--border);border-radius:8px;color:var(--text-dim);padding:.35rem .55rem;cursor:pointer;font-size:13px;transition:border-color .15s,color .15s;" title="Resetear datos">🗑</button>
+  </div>
+
+  <div class="stats-tabs">
+    <button class="stats-tab active" onclick="statsTab(this,'st-panel-general')">GENERAL</button>
+    <button class="stats-tab" onclick="statsTab(this,'st-panel-modos')">MODOS</button>
+    <button class="stats-tab" onclick="statsTab(this,'st-panel-torneos')">TORNEOS</button>
+    <button class="stats-tab" onclick="statsTab(this,'st-panel-casino')">CASINO</button>
+  </div>
+
+  <div class="rules-body" style="max-width:520px;width:100%">
+    <div class="stats-panel active" id="st-panel-general">
+      <div class="stat-row"><span class="stat-label">Partidas jugadas</span><span class="stat-value" id="st-matches">0</span></div>
+      <div class="stat-row"><span class="stat-label">Victorias</span><span class="stat-value" id="st-wins">0</span></div>
+      <div class="stat-row"><span class="stat-label">Derrotas</span><span class="stat-value" id="st-losses">0</span></div>
+      <div class="stat-row"><span class="stat-label">Empates</span><span class="stat-value" id="st-draws">0</span></div>
+      <div class="stat-row"><span class="stat-label">KOs infligidos</span><span class="stat-value" id="st-kos">0</span></div>
+    </div>
+
+    <div class="stats-panel" id="st-panel-modos">
+      <div class="stat-section-title">VICTORIAS</div>
+      <div class="stat-row"><span class="stat-label">Estándar</span><span class="stat-value" id="st-std">0</span></div>
+      <div class="stat-row"><span class="stat-label">Modo Jefe</span><span class="stat-value" id="st-boss">0</span></div>
+      <div class="stat-row"><span class="stat-label">FFA (3 jugadores)</span><span class="stat-value" id="st-ffa">0</span></div>
+      <div class="stat-section-title">MODO JEFE — ESTADO</div>
+      <div id="st-bosses-grid" style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:.3rem"></div>
+      <div class="stat-section-title">SUPERVIVENCIA ENDLESS</div>
+      <div class="stat-row"><span class="stat-label">Partidas jugadas</span><span class="stat-value" id="st-epl">0</span></div>
+      <div class="stat-row"><span class="stat-label">Eliminaciones totales</span><span class="stat-value" id="st-ekl">0</span></div>
+      <div class="stat-row"><span class="stat-label">Mejor racha</span><span class="stat-value" id="st-ebst">—</span></div>
+    </div>
+
+    <div class="stats-panel" id="st-panel-casino">
+      <div class="stat-section-title">CASINO — GENERAL</div>
+      <div class="stat-row"><span class="stat-label">Partidas totales</span><span class="stat-value" id="st-casino-total">0</span></div>
+      <div class="stat-section-title">BLACKJACK ARCANO</div>
+      <div class="stat-row"><span class="stat-label">Jugadas</span><span class="stat-value" id="st-pbj">0</span></div>
+      <div class="stat-row"><span class="stat-label">Victorias</span><span class="stat-value" id="st-cbj">0</span></div>
+      <div class="stat-section-title">DUELO DE CARTAS</div>
+      <div class="stat-row"><span class="stat-label">Jugadas</span><span class="stat-value" id="st-pduelo">0</span></div>
+      <div class="stat-row"><span class="stat-label">Victorias</span><span class="stat-value" id="st-cduelo">0</span></div>
+      <div class="stat-section-title">PAR O IMPAR</div>
+      <div class="stat-row"><span class="stat-label">Jugadas</span><span class="stat-value" id="st-ppoi">0</span></div>
+      <div class="stat-row"><span class="stat-label">Victorias</span><span class="stat-value" id="st-cpoi">0</span></div>
+      <div class="stat-section-title">DISCO NEXUS</div>
+      <div class="stat-row"><span class="stat-label">Jugadas</span><span class="stat-value" id="st-pdisco">0</span></div>
+      <div class="stat-row"><span class="stat-label">Victorias</span><span class="stat-value" id="st-cdisco">0</span></div>
+      <div class="stat-section-title">TRÍADA ARCANA</div>
+      <div class="stat-row"><span class="stat-label">Jugadas</span><span class="stat-value" id="st-ptriada">0</span></div>
+      <div class="stat-row"><span class="stat-label">Victorias</span><span class="stat-value" id="st-ctriada">0</span></div>
+    </div>
+
+    <div class="stats-panel" id="st-panel-torneos">
+      <div class="stat-section-title">MUNDIAL NEXUS</div>
+      <div class="stat-row"><span class="stat-label">Torneos jugados</span><span class="stat-value" id="st-mplayed">0</span></div>
+      <div class="stat-row"><span class="stat-label">Campeonatos ganados</span><span class="stat-value" id="st-mwins">0</span></div>
+      <div class="stat-row"><span class="stat-label">Mejor ronda</span><span class="stat-value" id="st-mbest">—</span></div>
+      <div id="st-mhist-wrap" style="display:none;width:100%">
+        <div id="st-mhist-list" style="width:100%;margin:.3rem 0 .1rem"></div>
+        <div id="st-mhist-nav" style="display:flex;gap:.4rem;justify-content:center;margin-bottom:.3rem"></div>
+      </div>
+      <div class="stat-section-title">NEXUS LEAGUE</div>
+      <div class="stat-row"><span class="stat-label">Torneos jugados</span><span class="stat-value" id="st-lplayed">0</span></div>
+      <div class="stat-row"><span class="stat-label">Campeonatos ganados</span><span class="stat-value" id="st-lwins">0</span></div>
+      <div class="stat-row"><span class="stat-label">Mejor ronda</span><span class="stat-value" id="st-lbest">—</span></div>
+      <div id="st-lhist-wrap" style="display:none;width:100%">
+        <div id="st-lhist-list" style="width:100%;margin:.3rem 0 .1rem"></div>
+        <div id="st-lhist-nav" style="display:flex;gap:.4rem;justify-content:center;margin-bottom:.3rem"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     ACHIEVEMENTS SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="achievementsScreen">
+  <div class="ach-tab-bar">
+    <button class="ach-tab active" id="tabLogros" onclick="achSwitchTab('logros')">🏆 Logros</button>
+    <button class="ach-tab" id="tabGaleria" onclick="achSwitchTab('galeria')">🖼️ Galería</button>
+  </div>
+  <!-- Logros -->
+  <div id="achContentWrap">
+    <div class="ach-count-sub" id="ach-count">0 / 34 desbloqueados</div>
+    <div class="ach-grid" id="achGrid"></div>
+    <div class="ach-pagination" id="achPagination">
+      <button class="ach-page-btn" id="achPrevBtn" onclick="achChangePage(-1)">‹</button>
+      <span id="achPageLabel" style="font-size:12px;color:var(--text-muted)">1 / 1</span>
+      <button class="ach-page-btn" id="achNextBtn" onclick="achChangePage(1)">›</button>
+    </div>
+  </div>
+  <!-- Galería -->
+  <div id="galleryContentWrap" style="display:none;flex:1;width:100%;overflow-y:auto;padding:.7rem .8rem 1.5rem">
+    <div id="galleryBody"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     STORE SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="storeScreen">
+  <div class="title-logo" style="font-size:clamp(1.2rem,4vw,1.6rem);margin-bottom:.1rem">Tienda</div>
+  <div class="title-sub" style="font-size:10px;margin-bottom:.5rem">NEXUS ARCANA</div>
+  <div class="store-coins-bar">🪙 <span id="store-coins-display">0</span> monedas &nbsp;·&nbsp; <span style="color:#9b59f7">🔮 <span class="frag-count">0</span></span></div>
+  <div style="width:100%;max-width:480px;overflow-y:auto;flex:1;display:flex;flex-direction:column;align-items:center;padding:0 .5rem">
+    <div class="store-section-title">— CASINO —</div>
+    <button class="btn" style="width:100%;max-width:480px;margin-bottom:.6rem;font-size:13px;letter-spacing:.1em" onclick="openCasino()">🎰 Abrir Casino</button>
+    <div class="store-section-title">— GALERÍA —</div>
+    <div class="store-chest-wrap">
+      <div class="store-chest-row">
+        <div class="store-chest-left">
+          <span class="store-chest-icon">📦</span>
+          <div>
+            <div class="store-chest-name">Cofre Arcano</div>
+            <div class="store-chest-sub">Da una pieza de galería al azar · <span class="frag-count">0</span> 🔮</div>
+          </div>
+        </div>
+        <button class="store-chest-btn" onclick="openGalleryChest()">5 🔮 Abrir</button>
+      </div>
+      <div class="store-chest-row store-chest-row-buy">
+        <div class="store-chest-left">
+          <span class="store-chest-icon">🔮</span>
+          <div>
+            <div class="store-chest-name">Fragmento Arcano</div>
+            <div class="store-chest-sub">También se obtienen al completar misiones diarias</div>
+          </div>
+        </div>
+        <button class="store-chest-btn store-chest-btn-buy" onclick="buyFragment()">50 🪙</button>
+      </div>
+    </div>
+    <div class="store-section-title">— CARTAS —</div>
+    <div class="store-gallery" id="storeGrid"></div>
+    <div class="store-section-title">— CÓDIGO —</div>
+    <div class="store-code-box">
+      <div class="store-code-title">🔑 CANJEAR CÓDIGO</div>
+      <div class="store-code-row">
+        <input class="store-code-input" id="storeCodeInput" type="text" placeholder="Ingresa el código..." maxlength="32" autocomplete="off" spellcheck="false">
+        <button class="store-code-btn" onclick="redeemStoreCode()">Canjear</button>
+      </div>
+      <div class="store-code-msg" id="storeCodeMsg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     WIKI DE CARTAS
+══════════════════════════════════════ -->
+<div class="screen" id="wikiScreen">
+  <!-- Barra de pestañas -->
+  <div class="wiki-tab-bar">
+    <button class="wiki-tab active" id="tabGuia" onclick="wikiSwitchTab('guia')">🃏 Guía de Cartas</button>
+    <button class="wiki-tab" id="tabAtlas" onclick="wikiSwitchTab('atlas')">🗺️ Atlas Nexus</button>
+  </div>
+  <!-- Contenido: Guía de Cartas -->
+  <div class="wiki-content-wrap" id="wikiContentWrap">
+    <div class="wiki-left">
+      <div class="wiki-left-header">
+        <input class="wiki-search" id="wikiSearch" placeholder="Buscar carta..." oninput="_wikiPage=0;wikiRenderList()">
+        <div class="wiki-filter-row" id="wikiFilters">
+          <button class="wiki-filter active" data-rarity="Todos" onclick="wikiSetFilter(this)">Todos</button>
+          <button class="wiki-filter" data-rarity="Normal" onclick="wikiSetFilter(this)" style="color:#5a90d9;border-color:#5a90d944">Normal</button>
+          <button class="wiki-filter" data-rarity="Raro" onclick="wikiSetFilter(this)" style="color:#4ac97a;border-color:#4ac97a44">Raro</button>
+          <button class="wiki-filter" data-rarity="Épico" onclick="wikiSetFilter(this)" style="color:#EF9F27;border-color:#EF9F2744">Épico</button>
+          <button class="wiki-filter" data-rarity="Mítico" onclick="wikiSetFilter(this)" style="color:#9b59f7;border-color:#9b59f744">Mítico</button>
+          <button class="wiki-filter" data-rarity="Especial" onclick="wikiSetFilter(this)" style="color:#f76eb2;border-color:#f76eb244">Especial</button>
+          <button class="wiki-filter" data-rarity="Legendario" onclick="wikiSetFilter(this)" style="color:#f76e6e;border-color:#f76e6e44">Legendario</button>
+        </div>
+      </div>
+      <div class="wiki-list" id="wikiList"></div>
+      <div class="wiki-pagination" id="wikiPagination">
+        <button class="wiki-page-btn" id="wikiPrevBtn" onclick="wikiChangePage(-1)">‹</button>
+        <span id="wikiPageLabel" style="font-size:10px;color:var(--text-muted)">1 / 1</span>
+        <button class="wiki-page-btn" id="wikiNextBtn" onclick="wikiChangePage(1)">›</button>
+      </div>
+      <button class="wiki-back-btn" onclick="showScreen('titleScreen')">← Volver al inicio</button>
+    </div>
+    <div class="wiki-right" id="wikiRight">
+      <div class="wiki-empty">← Selecciona una carta<br>para ver sus detalles</div>
+    </div>
+  </div>
+  <!-- Contenido: Atlas Nexus -->
+  <div class="atlas-content-wrap" id="atlasContentWrap" style="display:none">
+    <div class="atlas-nav-bar">
+      <button class="atlas-back-btn" id="atlasBackBtn" onclick="atlasGoBack()" style="display:none">← Reinos</button>
+      <button class="wiki-back-btn" style="width:auto;border:none;border-left:.5px solid var(--border);padding:.55rem .9rem" onclick="showScreen('titleScreen')">← Inicio</button>
+    </div>
+    <div class="atlas-body" id="atlasBody"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MULTIPLAYER MENU SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="multiplayerScreen">
+  <div class="title-logo" style="font-size:clamp(1.4rem,5vw,2rem)">Nexus Arcana</div>
+  <div class="title-sub" style="margin-bottom:2rem">MULTIJUGADOR</div>
+  <div class="mode-cards">
+    <div class="mode-card" onclick="showScreen('singlePlayerScreen')">
+      <div class="mode-card-icon">⚔️</div>
+      <div>
+        <div class="mode-card-title">Local <span class="mode-tag tag-purple">MISMO DISPOSITIVO</span></div>
+        <div class="mode-card-desc">Dos o tres jugadores en la misma pantalla. Estándar, Mano de 3, Jefe o FFA.</div>
+      </div>
+    </div>
+    <div class="mode-card" onclick="showOnlineScreen()">
+      <div class="mode-card-icon">🌐</div>
+      <div>
+        <div class="mode-card-title">En línea <span class="mode-tag tag-purple">INTERNET</span></div>
+        <div class="mode-card-desc">Cada jugador en su propio dispositivo. Funciona desde cualquier lugar con internet.</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:.9rem 1rem 1.2rem;width:100%;display:flex;justify-content:center">
+    <button class="btn btn-primary" onclick="showScreen('titleScreen')">← Volver</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SINGLE PLAYER SCREEN
+══════════════════════════════════════ -->
+<!-- Pantalla de modos vs BOT -->
+<div class="screen" id="botModeScreen">
+  <div class="mode-screen-header">
+    <div>
+      <div class="mode-screen-sub">UN JUGADOR</div>
+      <div class="mode-screen-title">Vs Bot</div>
+    </div>
+  </div>
+
+  <div class="mode-cards">
+    <div class="mode-card mode-card-std">
+      <div style="display:flex;gap:1rem;align-items:center;width:100%">
+        <div class="mode-card-icon">⚔️</div>
+        <div>
+          <div class="mode-card-title">Estándar <span class="mode-tag tag-purple">1 vs BOT</span></div>
+          <div class="mode-card-desc">Arma tu pila de cartas y enfréntate al bot.</div>
+        </div>
+      </div>
+      <div class="mod-row" id="botModRow">
+        <span style="font-size:9px;color:var(--text-dim);font-family:var(--font-title);letter-spacing:.08em">Modificadores:</span>
+        <div class="mod-row-btns">
+          <button class="mod-btn active" data-mod="standard" onclick="selectMod('bot',this,'standard')">Sin modificadores</button>
+          <button class="mod-btn" data-mod="hand3" onclick="selectMod('bot',this,'hand3')">🃏 Mano de 3</button>
+          <button class="mod-btn" data-mod="triple" onclick="selectMod('bot',this,'triple')">🔺 FFA 1v1v1</button>
+          <button class="mod-btn mod-btn-draft" data-mod="draft" id="botDraftBtn" onclick="selectMod('bot',this,'draft')">⚔ Draft</button>
+          <button class="mod-btn" data-mod="espejo" onclick="selectMod('bot',this,'espejo')">🔁 Espejo</button>
+          <button class="mod-btn" data-mod="caos" onclick="selectMod('bot',this,'caos')">🎲 Caos</button>
+          <button class="mod-btn" data-mod="rapido" onclick="selectMod('bot',this,'rapido')">⚡ Rápido</button>
+        </div>
+        <div id="botModNote" style="display:none;font-size:9.5px;color:#ffd93d;opacity:.75;padding:.1rem .1rem 0">⚡ Modo Rápido: no cuenta para estadísticas, XP, monedas ni racha.</div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="launchBotMode(_botModSel)">Jugar ▶</button>
+    </div>
+
+    <div class="bot-modes-grid">
+      <div class="mode-card mode-card-compact endless" onclick="_launchEndlessSetup()">
+        <div class="mode-card-icon">🏴</div>
+        <div class="mode-card-title">Supervivencia</div>
+        <span class="mode-tag tag-endless">∞ ENDLESS</span>
+      </div>
+      <div class="mode-card mode-card-compact boss" onclick="showBossPicker('local')">
+        <div class="mode-card-icon">👁</div>
+        <div class="mode-card-title">Modo Jefe</div>
+        <span class="mode-tag tag-boss">★ LEGENDARIO</span>
+      </div>
+      <div class="mode-card mode-card-compact liga" onclick="launchLigaMode()">
+        <div class="mode-card-icon">🏆</div>
+        <div class="mode-card-title">Nexus League</div>
+        <span class="mode-tag tag-liga">LIGA</span>
+      </div>
+      <div class="mode-card mode-card-compact fiesta" onclick="launchPartyMode()">
+        <div class="mode-card-icon">🌍</div>
+        <div class="mode-card-title">Modo Fiesta</div>
+        <span class="mode-tag tag-fiesta">MUNDIAL</span>
+      </div>
+    </div>
+  </div>
+  <div style="padding:.9rem 1rem 1.2rem;width:100%;display:flex;justify-content:center">
+    <button class="btn btn-primary" onclick="showScreen('titleScreen')">← Volver</button>
+  </div>
+</div>
+
+<!-- Pantalla de modos multijugador local -->
+<div class="screen" id="singlePlayerScreen">
+  <div class="mode-screen-header">
+    <div>
+      <div class="mode-screen-sub">MULTIJUGADOR</div>
+      <div class="mode-screen-title">Local</div>
+    </div>
+  </div>
+
+  <div class="mode-cards">
+    <div class="mode-card mode-card-std">
+      <div style="display:flex;gap:1rem;align-items:center;width:100%">
+        <div class="mode-card-icon">⚔️</div>
+        <div>
+          <div class="mode-card-title">Estándar <span class="mode-tag tag-purple">LOCAL</span></div>
+          <div class="mode-card-desc">Cada jugador arma su pila de cartas. Elige un modificador.</div>
+        </div>
+      </div>
+      <div class="mod-row" id="localModRow">
+        <span style="font-size:9px;color:var(--text-dim);font-family:var(--font-title);letter-spacing:.08em">Modificadores:</span>
+        <div class="mod-row-btns">
+          <button class="mod-btn active" data-mod="standard" onclick="selectMod('local',this,'standard')">Sin modificadores</button>
+          <button class="mod-btn" data-mod="hand3" onclick="selectMod('local',this,'hand3')">🃏 Mano de 3</button>
+          <button class="mod-btn" data-mod="triple" onclick="selectMod('local',this,'triple')">🔺 FFA 1v1v1</button>
+          <button class="mod-btn mod-btn-draft" data-mod="draft" id="localDraftBtn" onclick="selectMod('local',this,'draft')">⚔ Draft</button>
+          <button class="mod-btn" data-mod="espejo" onclick="selectMod('local',this,'espejo')">🔁 Espejo</button>
+          <button class="mod-btn" data-mod="caos" onclick="selectMod('local',this,'caos')">🎲 Caos</button>
+          <button class="mod-btn" data-mod="rapido" onclick="selectMod('local',this,'rapido')">⚡ Rápido</button>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="launchMode(_localModSel)">Jugar ▶</button>
+    </div>
+
+    <div class="mode-card mode-card-compact boss" onclick="showBossPicker('local2v1')">
+      <div class="mode-card-icon">👁</div>
+      <div class="mode-card-title">2v1 vs Jefe</div>
+      <span class="mode-tag tag-boss">★ COOPERATIVO</span>
+    </div>
+  </div>
+  <div style="padding:.9rem 1rem 1.2rem;width:100%;display:flex;justify-content:center">
+    <button class="btn btn-primary" onclick="showScreen('multiplayerScreen')">← Volver</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     BOSS PICKER SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="bossPickScreen">
+  <div class="mode-screen-header" style="max-width:520px">
+    <div>
+      <div class="mode-screen-sub">MODO JEFE</div>
+      <div class="mode-screen-title">Elige tu rival</div>
+    </div>
+  </div>
+  <div id="bossPickGrid" style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:520px"></div>
+  <div class="setup-bottom-bar" style="max-width:520px">
+    <button class="btn" id="bossPickBackBtn">← Volver</button>
+    <button class="btn btn-primary" style="flex:1" id="bossPickConfirmBtn" onclick="confirmBossPick()" disabled>Continuar ▶</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SETUP SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="setupScreen">
+  <div class="setup-topbar">
+    <div id="setupHeader" style="font-family:var(--font-title);font-size:10px;letter-spacing:.18em;color:var(--text-muted)">PREPARAR PARTIDA</div>
+  </div>
+  <div id="modifierBadge" style="display:none" class="modifier-badge"></div>
+  <div style="width:100%;display:flex;flex-direction:column;align-items:center;padding:1rem;flex:1">
+    <div class="setup-grid" id="setupGrid">
+      <!-- Dinamico -->
+    </div>
+  </div>
+  <div class="setup-bottom-bar" id="setupBottomBar">
+    <button class="btn" id="setupBackBtn" onclick="showScreen(gameMode==='boss'?(botMode?'botModeScreen':'singlePlayerScreen'):botMode?'botModeScreen':(isOnline?'multiplayerScreen':'singlePlayerScreen'))">← Volver</button>
+    <button class="btn btn-primary" id="startBtn" onclick="startGame()" disabled style="flex:1">Comenzar ▶</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     DRAFT OVERLAY (modal sobre gameScreen)
+══════════════════════════════════════ -->
+<div id="draftOverlay" style="display:none;position:fixed;inset:0;z-index:950;background:rgba(4,4,12,.82);backdrop-filter:blur(2px);display:none;flex-direction:column;align-items:center;justify-content:center;padding:.8rem 1rem 1rem">
+  <div class="draft-header">
+    <div id="draftPickerLabel" class="draft-picker-label">Eligiendo…</div>
+    <div id="draftProgress" class="draft-progress">Pick 1 / 6</div>
+  </div>
+  <div id="draftBody" class="draft-body"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     GAME SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="gameScreen">
+  <div class="game-layout">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+      <div>
+        <div class="turn-info">TURNO <span id="turnNum">1</span> &nbsp;<span id="modeChip" class="mode-chip chip-std"></span></div>
+        <div id="endlessRelicHUD" class="endless-relic-hud"></div>
+        <div class="turn-player" id="turnPlayerEl">—</div>
+      </div>
+      <div class="top-bar-actions">
+        <button class="btn btn-sm" id="resetLobbyBtn" onclick="resetToLobby()" style="display:none" title="Volver al lobby sin cerrar la sala">↩ Lobby</button>
+        <button class="btn btn-sm" id="skipCycleBtn" onclick="forceSkipCycle()" style="display:none;opacity:.55;font-size:11px" title="Forzar siguiente ciclo de turnos (botón de emergencia — solo host)">⚡ Skip</button>
+        <button class="btn btn-sm" id="resyncBtn" onclick="forceResync()" style="display:none;opacity:.7;font-size:11px" title="Forzar resincronización (si el juego se trabó)">↺ Sync</button>
+        <button class="btn btn-sm" onclick="openSettings(true)" title="Audio">⚙️</button>
+        <button class="btn btn-sm" onclick="confirmAbandon()">✕</button>
+      </div>
+    </div>
+
+    <!-- Phase banner -->
+    <div id="phaseBanner" class="phase-banner phase-std">INICIO</div>
+    <!-- Caos effect banner -->
+    <div id="caosEffectBanner"></div>
+
+    <!-- Dynamic battlefield (filled by JS) -->
+    <div id="battlefieldWrap"></div>
+
+    <!-- Hand of 3 section (hidden in non-hand modes) -->
+    <div class="hand-section" id="handSection" style="display:none">
+      <div class="hand-title">
+        <span>✦ MANO — elige tu próxima carta</span>
+        <span id="handOwnerTag" style="font-size:9px;color:var(--text-dim)"></span>
+      </div>
+      <div class="hand-grid" id="handGrid"></div>
+    </div>
+
+    <!-- Attack panels -->
+    <div id="attackPanelWrap"></div>
+
+    <!-- Log -->
+    <div class="log-wrap" id="logWrap"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ONLINE SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="onlineScreen">
+
+  <!-- Fase 1: conectar -->
+  <div id="onlineConnectDiv" style="width:100%;max-width:400px">
+    <div class="setup-header">MULTIJUGADOR ONLINE</div>
+    <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:1.5rem">
+      Juega desde cualquier lugar con internet.<br>Crea una sala y comparte el código con tu rival.
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <button class="btn btn-primary btn-lg" onclick="onlineCreate()">🏠 Crear sala</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="text" id="joinCodeInput" placeholder="Código (ej: AB12)" maxlength="5"
+          style="text-transform:uppercase;text-align:center;font-size:18px;letter-spacing:.22em;flex:1"
+          oninput="this.value=this.value.toUpperCase()">
+        <button class="btn btn-lg" onclick="onlineJoin()">Unirse →</button>
+      </div>
+    </div>
+    <div id="onlineConnectError" style="color:#e08080;font-size:12px;margin-top:.75rem;text-align:center;min-height:18px"></div>
+    <div style="margin-top:1.5rem;text-align:center">
+      <button class="btn btn-sm" onclick="showScreen('multiplayerScreen')">← Volver</button>
+    </div>
+  </div>
+
+  <!-- Fase 2: sala + setup de mazo -->
+  <div id="onlineLobbyDiv" style="display:none;width:100%;max-width:480px">
+    <!-- Banner de sala -->
+    <div style="background:var(--surface);border:.5px solid var(--border2);border-radius:var(--radius);padding:.75rem 1rem;margin-bottom:1rem;text-align:center">
+      <div style="font-family:var(--font-title);font-size:10px;letter-spacing:.18em;color:var(--text-muted)" id="onlineRoleLabel">ANFITRIÓN</div>
+      <div style="font-family:var(--font-title);font-size:30px;letter-spacing:.35em;margin:.25rem 0" id="onlineCodeDisplay"
+           title="Compartí este código con el rival">----</div>
+      <div style="font-size:11px;color:var(--text-muted)" id="onlineStatusMsg">Esperando rival…</div>
+      <div id="tripleJoinedBanner" style="display:none;margin-top:.4rem;font-size:11px;color:#c4b0ff">
+        ⚡ 3 jugadores — <strong>Modo FFA 1v1v1</strong> activado
+      </div>
+    </div>
+
+    <!-- Selector de modo (solo anfitrión) -->
+    <div id="onlineModeSelector" style="display:none;margin-bottom:1rem">
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;text-align:center;letter-spacing:.1em">MODO DE JUEGO</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">
+        <div class="mode-mini-card selected" id="omBtn_standard" onclick="selectOnlineMode('standard',this)">⚔️<br>Estándar</div>
+        <div class="mode-mini-card" id="omBtn_boss" onclick="selectOnlineMode('boss',this)">👁<br>Modo Jefe</div>
+      </div>
+      <!-- Modificadores (solo cuando Estándar está seleccionado) -->
+      <div id="onlineStdMods" style="margin-top:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px">
+        <button class="mod-btn active" id="omMod_standard" onclick="selectOnlineMod('standard',this)">Sin mods</button>
+        <button class="mod-btn" id="omMod_hand3" onclick="selectOnlineMod('hand3',this)">🃏 Mano de 3</button>
+        <button class="mod-btn mod-btn-draft" id="omMod_draft" onclick="selectOnlineMod('draft',this)">⚔ Draft</button>
+        <button class="mod-btn" id="omMod_espejo" onclick="selectOnlineMod('espejo',this)">🔁 Espejo</button>
+        <button class="mod-btn" id="omMod_caos" onclick="selectOnlineMod('caos',this)">🎲 Caos</button>
+        <button class="mod-btn" id="omMod_rapido" onclick="selectOnlineMod('rapido',this)">⚡ Rápido</button>
+        <div style="display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-dim);padding:2px;line-height:1.3;text-align:center">🔺 3 jugadores = FFA</div>
+      </div>
+    </div>
+    <!-- Selector de jefe online (solo anfitrión, solo cuando modo=boss) -->
+    <div id="onlineBossSelector" style="display:none;margin-bottom:1rem">
+      <div style="font-size:10px;color:var(--boss-glow);margin-bottom:6px;text-align:center;letter-spacing:.1em">ELIGE EL JEFE</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px" id="onlineBossGrid"></div>
+    </div>
+    <!-- Modo visible para invitado -->
+    <div id="onlineModeDisplay" style="display:none;margin-bottom:1rem;text-align:center;font-size:11px;color:var(--text-muted)">
+      Modo: <span id="onlineModeDisplayText" style="color:#c4b0ff;font-weight:bold">Estándar</span>
+    </div>
+
+    <!-- Setup de este jugador -->
+    <div class="player-setup">
+      <h2 id="onlineMyHeader" class="p1-hdr" style="margin-bottom:1rem">Tu mazo <span id="onlineMyNameLabel" style="font-weight:400;color:var(--text);font-size:13px;letter-spacing:.04em"></span></h2>
+      <input type="text" id="onlineMyName" style="display:none" value="Jugador" maxlength="18">
+      <div class="deck-size-row" id="onlineDeckSizeRow">
+        <label>Cartas en pila:</label>
+        <input type="range" min="6" max="8" value="6" step="1" id="onlineMySize" oninput="updateOnlineDeckSize(true)">
+        <span class="deck-size-val" id="onlineMySizeVal">6</span>
+      </div>
+      <div id="onlineDeckPickerWrap">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:11px;color:var(--text-muted)">Selecciona tus cartas:</span>
+          <button class="btn btn-sm" style="border-color:var(--purple);color:#c4b0ff" onclick="randomOnlineDeck()">⚄ Aleatorio</button>
+        </div>
+        <div class="deck-preview" id="onlineMyDeck"></div>
+        <div class="deck-count" id="onlineMyCount">0 / 6 seleccionadas</div>
+      </div>
+      <div id="onlineModeNotice" style="display:none;padding:.85rem 1rem;text-align:center;border-radius:8px;font-size:12px;margin-bottom:.5rem"></div>
+    </div>
+
+    <div style="margin-top:1rem;text-align:center">
+      <div id="onlineReadyStatus" style="font-size:12px;color:var(--text-muted);margin-bottom:.5rem;min-height:18px"></div>
+      <button class="btn btn-primary" id="onlineReadyBtn" onclick="sendOnlineReady()" disabled>¡Listo! ▶</button>
+    </div>
+    <div style="margin-top:.75rem;text-align:center">
+      <button class="btn btn-sm" onclick="leaveOnlineLobby()">← Volver al menú</button>
+    </div>
+  </div>
+
+</div>
+
+<canvas id="shockwaveCanvas"></canvas>
+<!-- ══════════════════════════════════════
+     END SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="endScreen">
+  <div class="end-title end-win-glow" id="endTitle">—</div>
+  <div class="end-sub" id="endSub">—</div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+    <!-- Botones modo LOCAL -->
+    <button class="btn btn-primary btn-lg" id="endRevanchaBtn" onclick="revancha()">⟳ Revancha</button>
+    <button class="btn btn-lg" id="endMenuBtn" onclick="endToMenu()">Menú principal</button>
+    <!-- Botones modo ONLINE (ocultos por defecto) -->
+    <button class="btn btn-primary btn-lg" id="endLobbyBtn" style="display:none" onclick="endOnlineLobby()">↩ Volver al lobby</button>
+    <button class="btn btn-lg" id="endSalirBtn" style="display:none" onclick="endToMenu()">Salir</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PARTY MODE SCREENS
+══════════════════════════════════════ -->
+
+<!-- ══════════════════════════════════════
+     RULES / HOW TO PLAY SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="rulesScreen">
+
+  <!-- Header -->
+  <div class="rules-header">
+    <button class="rules-header-back" onclick="showScreen('titleScreen')">←</button>
+    <div class="rules-header-center">
+      <div class="rules-header-title">📖 CÓMO JUGAR</div>
+      <div class="rules-header-sub">Nexus Arcana · Guía de referencia rápida</div>
+    </div>
+    <div class="rules-header-spacer"></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="rules-tabs">
+    <button class="rules-tab active" onclick="rulesTab(this,'rt-basico')">🎮 BÁSICO</button>
+    <button class="rules-tab" onclick="rulesTab(this,'rt-rarezas')">⭐ RAREZAS</button>
+    <button class="rules-tab" onclick="rulesTab(this,'rt-ataques')">⚔️ ATAQUES</button>
+    <button class="rules-tab" onclick="rulesTab(this,'rt-modos')">🏆 MODOS</button>
+  </div>
+
+  <!-- Body -->
+  <div class="rules-body">
+
+    <!-- TAB: BÁSICO -->
+    <div class="rules-panel active" id="rt-basico">
+      <button onclick="startInGameTutorial()" style="display:flex;align-items:center;gap:10px;width:100%;padding:.75rem 1rem;margin-bottom:14px;background:linear-gradient(135deg,rgba(123,95,212,.18),rgba(123,95,212,.08));border:1px solid rgba(123,95,212,.45);border-radius:12px;cursor:pointer;text-align:left;">
+        <span style="font-size:22px">🎓</span>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600;color:var(--text)">Tutorial interactivo</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:2px">Juega una partida guiada paso a paso</div>
+        </div>
+        <span style="font-size:18px;color:var(--purple)">›</span>
+      </button>
+      <div class="rules-section-title">Objetivo</div>
+      <p class="rules-text">Elimina todas las cartas del oponente. Arma una pila de <strong style="color:var(--text)">6 a 8 cartas</strong> respetando los límites de rareza. La pila se baraja al inicio.</p>
+
+      <div class="rules-section-title">Estructura de un turno</div>
+      <div class="rules-table-wrap">
+        <table class="rules-table">
+          <tr><th>#</th><th>Fase</th><th>Qué pasa</th></tr>
+          <tr><td style="color:var(--purple);font-weight:700">1</td><td style="color:var(--text)">Efectos</td><td>Se resuelven DoT, regen y escudos.</td></tr>
+          <tr><td style="color:var(--purple);font-weight:700">2</td><td style="color:var(--text)">Ataque</td><td>Elige 1 ataque para tu carta activa.</td></tr>
+          <tr><td style="color:var(--purple);font-weight:700">3</td><td style="color:var(--text)">Fin</td><td>Cartas a 0 HP descartadas. Entra la siguiente.</td></tr>
+        </table>
+      </div>
+      <p class="rules-text" style="font-size:11px;color:var(--text-dim)">Cada carta tiene hasta 2 ataques disponibles, pero solo puede usar 1 por turno.</p>
+    </div>
+
+    <!-- TAB: RAREZAS -->
+    <div class="rules-panel" id="rt-rarezas">
+      <div class="rules-section-title">Rareza, HP y límites</div>
+      <p class="rules-text">La rareza de una carta determina sus puntos de vida y cuántas copias puedes incluir en tu pila.</p>
+      <table class="rules-table">
+        <tr><th>Rareza</th><th>Estrellas</th><th>HP</th><th>Límite</th></tr>
+        <tr>
+          <td><span class="rb rb-normal">Normal</span></td>
+          <td>⭐ 1–2</td><td>50–100</td><td>Sin límite</td>
+        </tr>
+        <tr>
+          <td><span class="rb rb-raro">Raro</span></td>
+          <td>⭐ 3–4</td><td>150–200</td><td>Máx. 3</td>
+        </tr>
+        <tr>
+          <td><span class="rb rb-epico">Épico</span></td>
+          <td>⭐ 5–6</td><td>250–300</td><td>Máx. 2</td>
+        </tr>
+        <tr>
+          <td><span class="rb rb-mitico">Mítico</span></td>
+          <td>⭐ 7–8</td><td>350–400</td><td>Máx. 2</td>
+        </tr>
+        <tr>
+          <td><span class="rb rb-especial">Especial</span></td>
+          <td>⭐ 9</td><td>500</td><td>Máx. 1</td>
+        </tr>
+        <tr>
+          <td><span class="rb rb-legend">Legendario</span></td>
+          <td>⭐ 10</td><td>1000</td><td>Solo Modo Jefe</td>
+        </tr>
+      </table>
+      <p class="rules-text" style="font-size:11px;color:var(--text-dim)">* Las cartas Legendarias no pueden incluirse en pilas de juego estándar. Solo aparecen como jefes.</p>
+    </div>
+
+    <!-- TAB: ATAQUES -->
+    <div class="rules-panel" id="rt-ataques">
+      <div class="rules-section-title">Tipos de ataque</div>
+      <table class="rules-table">
+        <tr><th>Tipo</th><th>Efecto</th></tr>
+        <tr><td><span class="atk-icon">💥</span> Directo</td><td>Daño inmediato. Puede incluir daño propio o absorción de vida.</td></tr>
+        <tr><td><span class="atk-icon">☠️</span> DoT</td><td>Daño por turno durante N turnos. N = 0 es permanente.</td></tr>
+        <tr><td><span class="atk-icon">💚</span> Regen</td><td>Recupera HP propio cada turno durante N turnos.</td></tr>
+        <tr><td><span class="atk-icon">📈</span> Acumulativo</td><td>El daño crece con cada uso, sin importar si se intercalan otros ataques.</td></tr>
+        <tr><td><span class="atk-icon">🛡️</span> Escudo</td><td>Reduce el daño recibido en % por N turnos.</td></tr>
+        <tr><td><span class="atk-icon">🎲</span> Probabilístico</td><td>Dos resultados posibles. Puede fallar con consecuencia negativa.</td></tr>
+      </table>
+    </div>
+
+    <!-- TAB: MODOS -->
+    <div class="rules-panel" id="rt-modos">
+      <table class="rules-table">
+        <tr><th>Modo</th><th>Descripción</th></tr>
+        <tr><td>⚔️ Estándar</td><td>1 vs 1 por turnos. Arma tu pila de 6–8 cartas. Modificadores disponibles: Mano de 3, FFA, Draft, Espejo, Caos, Rápido.</td></tr>
+        <tr><td>🏴 Endless</td><td>Oleadas infinitas de enemigos. Las cartas caídas no vuelven. ¿Cuántas oleadas aguantas?</td></tr>
+        <tr><td>👁 Modo Jefe</td><td>Enfrenta a una carta Legendaria con 1000 HP controlada por el bot. Elige tu jefe antes de empezar.</td></tr>
+        <tr><td>🏆 Nexus League</td><td>36 equipos, fase de liga + playoffs ida y vuelta. Estilo Champions League.</td></tr>
+        <tr><td>🌍 Modo Fiesta</td><td>48 países, grupos + eliminación directa. Estilo Copa del Mundo.</td></tr>
+        <tr><td>👥 2v1 Jefe</td><td>Dos jugadores por turnos contra un jefe legendario. Solo en multijugador.</td></tr>
+      </table>
+    </div>
+
+    <!-- Footer créditos — dentro del scroll, visible en todos los tabs -->
+    <div class="rules-footer">
+      <div class="rules-footer-logo">NEXUS ARCANA</div>
+      <div class="rules-footer-credit">Juego de cartas por turnos • Beta 1.1</div>
+      <div><span class="rules-footer-tag">CREADO POR CRYSTALLYZER</span></div>
+    </div>
+
+  </div><!-- /rules-body -->
+
+</div><!-- /rulesScreen -->
+
+<!-- Selección de país -->
+<div class="screen" id="partyCountryScreen">
+  <div class="fiesta-title">MODO FIESTA</div>
+  <div class="fiesta-sub">MUNDIAL NEXUS 2026 · ELIGE TU PAÍS</div>
+  <div class="country-grid" id="partyCountryGrid"></div>
+  <div style="margin-top:1rem;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <button class="btn btn-sm" onclick="partyBackToDeck()">← Volver</button>
+    <button class="btn btn-primary" id="partyCountryConfirmBtn" onclick="partyConfirmCountry()" disabled>Comenzar Torneo ▶</button>
+  </div>
+</div>
+
+<!-- Fase de grupos -->
+<div class="screen" id="partyGroupsScreen">
+  <div style="width:100%;max-width:1000px;margin:0 auto .4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem">
+    <div class="fiesta-title" style="font-size:clamp(.9rem,2.5vw,1.3rem);margin-bottom:0">🌍 MUNDIAL NEXUS 2026</div>
+    <div class="party-phase-label" id="partyGroupsPhaseLabel" style="margin-bottom:0">FASE DE GRUPOS</div>
+  </div>
+  <div class="groups-scroll">
+    <div class="groups-grid" id="partyGroupsGrid"></div>
+    <div id="partyBest3rdSection" style="margin-top:.75rem"></div>
+    <div id="partyJornLog" style="margin-top:.5rem;font-size:10px;color:var(--text-muted);line-height:1.8"></div>
+  </div>
+  <div style="margin-top:.75rem;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <button class="btn btn-primary" id="partyGroupsNextBtn" onclick="partyGroupsNext()">Siguiente ▶</button>
+    <button class="btn btn-sm" onclick="_showTourneyExitModal('mundial')">Abandonar torneo</button>
+  </div>
+</div>
+
+<!-- Fase eliminatoria — bracket -->
+<div class="screen" id="partyBracketScreen">
+  <div style="width:100%;max-width:1200px;margin:0 auto .4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem">
+    <div class="fiesta-title" style="font-size:clamp(.9rem,2.5vw,1.3rem);margin-bottom:0">🌍 MUNDIAL NEXUS 2026</div>
+    <div class="party-phase-label" id="partyBracketPhaseLabel" style="margin-bottom:0">ELIMINACIÓN DIRECTA</div>
+  </div>
+  <div style="width:100%;max-width:1200px;margin:0 auto;overflow-x:auto">
+    <div class="bracket-rounds" id="partyBracketRounds"></div>
+  </div>
+  <div style="margin-top:.75rem;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <button class="btn btn-primary" id="partyBracketNextBtn" onclick="partyBracketNext()">Siguiente partido ▶</button>
+    <button class="btn btn-sm" onclick="_showTourneyExitModal('mundial')">Abandonar torneo</button>
+    <button class="btn" id="partyBracketBackBtn" style="display:none">← Volver</button>
+  </div>
+</div>
+
+<!-- Overlay de resultados simulados -->
+<div id="partySimOverlay">
+  <div class="party-sim-modal">
+    <div class="psm-title" id="psmTitle">RESULTADOS DE LA JORNADA</div>
+    <div class="psm-log" id="psmLog"></div>
+    <div class="psm-next" id="psmNext"></div>
+    <div style="text-align:center;margin-top:.5rem">
+      <button class="btn btn-primary" id="psmBtn" onclick="partySimClose()">Continuar ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pantalla de eliminación Mundial -->
+<div class="screen" id="partyElimScreen">
+  <div class="party-end-trophy" id="partyElimTrophy">❌</div>
+  <div class="fiesta-title" id="partyElimTitle">ELIMINADO</div>
+  <div class="fiesta-sub" id="partyElimSub" style="max-width:420px;text-align:center;line-height:1.7;margin-bottom:.8rem"></div>
+  <div id="partyElimRoute" style="font-size:10px;color:var(--text-dim);max-width:340px;text-align:center;line-height:1.9;margin-bottom:1rem"></div>
+  <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem">
+    <button class="btn" onclick="_partyShowHist('partyElimScreen')">📋 Historial</button>
+    <button class="btn" id="partyElimBracketBtn" onclick="_partyShowBracketFromElim('partyElimScreen')">🏆 Bracket</button>
+  </div>
+  <button class="btn btn-primary btn-lg" onclick="_partyGoToMenu()">Menú principal</button>
+</div>
+
+<!-- Historial Mundial -->
+<div class="screen" id="partyHistScreen">
+  <div class="liga-phase-label">HISTORIAL</div>
+  <div class="liga-sub" style="margin-bottom:.6rem">MUNDIAL NEXUS 2026</div>
+  <div id="partyHistList" style="
+    width:100%;max-width:520px;margin:0 auto;
+    overflow-y:auto;flex:1;
+    font-size:11px;color:var(--text-muted);
+    display:flex;flex-direction:column;gap:4px;
+  "></div>
+  <div style="margin-top:1rem;text-align:center;flex-shrink:0;padding-bottom:.5rem">
+    <button class="btn" id="partyHistBackBtn">← Volver</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODO FIESTA LIGA — PANTALLAS
+══════════════════════════════════════ -->
+
+<!-- Nombre del equipo -->
+<div class="screen" id="ligaNameScreen">
+  <div class="liga-title">NEXUS LEAGUE</div>
+  <div class="liga-sub">NOMBRE DE TU FACCIÓN</div>
+  <div style="width:100%;max-width:340px;margin:0 auto">
+    <p style="font-size:11.5px;color:var(--text-muted);margin-bottom:1rem;text-align:center;line-height:1.6">
+      Este nombre aparecerá en la tabla, resultados y eliminatorias durante todo el torneo.
+    </p>
+    <input type="text" id="ligaTeamNameInput" maxlength="24" placeholder="Ej: Los Inmortales"
+           oninput="document.getElementById('ligaNameConfirmBtn').disabled=!this.value.trim()"
+           onkeydown="if(event.key==='Enter'&&this.value.trim())_ligaNameConfirm()">
+    <div style="margin-top:1.4rem;display:flex;gap:10px;justify-content:center">
+      <button class="btn" onclick="_ligaNameBack()">← Volver</button>
+      <button class="btn btn-primary" id="ligaNameConfirmBtn" disabled onclick="_ligaNameConfirm()">
+        Comenzar torneo ▶
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Mundial cinematic intro -->
+<div id="mundialIntroOverlay">
+  <canvas id="mundialConfettiCanvas"></canvas>
+  <div class="mundial-stadium-light"></div>
+  <div class="mundial-flash"></div>
+  <div class="mundial-intro-content">
+    <div class="mundial-intro-trophy">🏆</div>
+    <div class="mundial-intro-event">MUNDIAL NEXUS</div>
+    <div class="mundial-intro-flag" id="mundialIntroFlag">🏳</div>
+    <div class="mundial-intro-country" id="mundialIntroCountry">—</div>
+    <div class="mundial-intro-divider"></div>
+    <div class="mundial-intro-tagline" id="mundialIntroTagline">—</div>
+    <div class="mundial-intro-sub">48 PAÍSES · 12 GRUPOS · UN CAMPEÓN</div>
+  </div>
+  <button class="mundial-intro-skip" onclick="_mundialIntroSkip()">SALTAR ▶</button>
+</div>
+
+<!-- Liga cinematic intro -->
+<div id="ligaIntroOverlay">
+  <div class="liga-intro-bg"></div>
+  <div class="liga-intro-line" style="top:28%"></div>
+  <div class="liga-intro-line" style="bottom:28%;animation-delay:.15s"></div>
+  <div class="liga-intro-content">
+    <div class="liga-intro-league">NEXUS LEAGUE</div>
+    <div class="liga-intro-presents">PRESENTA A</div>
+    <div class="liga-intro-name" id="ligaIntroName">—</div>
+    <div class="liga-intro-tagline" id="ligaIntroTagline">—</div>
+    <div class="liga-intro-season" id="ligaIntroSeason">TEMPORADA I · 36 FACCIONES · LA GLORIA OS ESPERA</div>
+  </div>
+  <button class="liga-intro-skip" onclick="_ligaIntroSkip()">SALTAR ▶</button>
+</div>
+
+<!-- Boss intro cinematic -->
+<div id="bossIntroOverlay">
+  <div class="boss-intro-bg"></div>
+  <div class="boss-intro-content">
+    <div class="boss-intro-warning">⚠ ADVERTENCIA DE PELIGRO EXTREMO</div>
+    <div class="boss-intro-icon" id="bossIntroIcon">👁</div>
+    <div class="boss-intro-name" id="bossIntroName">—</div>
+    <div class="boss-intro-divider"></div>
+    <div class="boss-intro-title" id="bossIntroTitle">—</div>
+    <div class="boss-intro-flavor" id="bossIntroFlavor">—</div>
+  </div>
+  <button class="boss-intro-skip" onclick="_bossIntroSkip()">SALTAR ▶</button>
+</div>
+
+<!-- Tabla general de la liga -->
+<div class="screen" id="ligaTableScreen">
+  <div class="liga-phase-label" id="ligaTablePhaseLabel">FASE DE LIGA</div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:.8rem;margin-bottom:.4rem">
+    <span class="liga-sub" style="margin:0" id="ligaTableJornadaLabel">JORNADA 1 / 8</span>
+  </div>
+  <div class="liga-legend">
+    <span><span class="liga-legend-dot" style="background:#4a90d9"></span>Top 8 — Clasificado</span>
+    <span><span class="liga-legend-dot" style="background:#c9a84c"></span>9–24 — Playoffs</span>
+    <span><span class="liga-legend-dot" style="background:#444"></span>25–36 — Eliminado</span>
+  </div>
+  <div class="liga-table-scroll">
+    <table class="liga-table" id="ligaStandingsTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th style="text-align:left">Equipo</th>
+          <th>PJ</th><th>G</th><th>E</th><th>P</th>
+          <th>Pts</th><th title="Cartas eliminadas">KO</th>
+        </tr>
+      </thead>
+      <tbody id="ligaStandingsTbody"></tbody>
+    </table>
+  </div>
+  <div id="ligaTableActions" style="margin-top:.8rem;text-align:center;flex-shrink:0;padding-bottom:.5rem"></div>
+  <button class="btn" style="margin-top:.4rem;font-size:10px;opacity:.6" onclick="_showTourneyExitModal('liga')">🚪 Abandonar Liga</button>
+</div>
+
+<!-- Bracket de eliminatorias -->
+<div class="screen" id="ligaBracketScreen">
+  <div class="liga-phase-label" id="ligaBracketLabel">ELIMINATORIAS</div>
+  <div class="liga-sub" id="ligaBracketSub" style="margin-bottom:.6rem"></div>
+  <div class="liga-bracket-rounds" id="ligaBracketRounds"></div>
+  <div id="ligaBracketActions" style="margin-top:.8rem;text-align:center;flex-shrink:0;padding-bottom:.5rem"></div>
+  <button class="btn" style="margin-top:.4rem;font-size:10px;opacity:.6" onclick="_showTourneyExitModal('liga')">🚪 Abandonar Liga</button>
+</div>
+
+<!-- Historial de resultados -->
+<div class="screen" id="ligaLogScreen">
+  <div class="liga-phase-label">HISTORIAL</div>
+  <div class="liga-sub" style="margin-bottom:.6rem">RESULTADOS DEL TORNEO</div>
+  <div id="ligaLogList" style="
+    width:100%;max-width:520px;margin:0 auto;
+    overflow-y:auto;flex:1;
+    font-size:11px;color:var(--text-muted);
+    display:flex;flex-direction:column;gap:4px;
+  "></div>
+  <div style="margin-top:1rem;text-align:center;flex-shrink:0;padding-bottom:.5rem">
+    <button class="btn" id="ligaLogBackBtn">← Volver</button>
+  </div>
+</div>
+
+<!-- Eliminación / Subcampeón -->
+<div class="screen" id="ligaElimScreen">
+  <div class="party-end-trophy" id="ligaElimTrophy">💔</div>
+  <div class="liga-title" id="ligaElimTitle">ELIMINADO</div>
+  <div class="liga-sub" id="ligaElimSub"
+       style="max-width:420px;text-align:center;line-height:1.7;margin-bottom:.8rem"></div>
+  <div id="ligaElimRoute"
+       style="font-size:10px;color:var(--text-dim);max-width:340px;text-align:center;line-height:1.9;margin-bottom:1rem"></div>
+  <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem">
+    <button class="btn" onclick="_ligaShowLog('ligaElimScreen')">📋 Historial</button>
+    <button class="btn" id="ligaElimBracketBtn" onclick="_ligaShowBracket(_ligaCurrentPhase(),'ligaElimScreen')">🏆 Bracket</button>
+  </div>
+  <button class="btn btn-primary btn-lg" onclick="_ligaGoToMenu()">Menú principal</button>
+</div>
+
+<!-- Campeón -->
+<div class="screen" id="ligaChampScreen">
+  <div class="party-end-trophy">🏆</div>
+  <div class="liga-title">¡CAMPEÓN DE LA LIGA!</div>
+  <div class="liga-sub" id="ligaChampSub"
+       style="max-width:420px;text-align:center;line-height:1.7;margin-bottom:.8rem"></div>
+  <div id="ligaChampRoute"
+       style="font-size:10px;color:var(--text-dim);max-width:340px;text-align:center;line-height:1.9;margin-bottom:1rem"></div>
+  <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem">
+    <button class="btn" onclick="_ligaShowLog('ligaChampScreen')">📋 Historial</button>
+    <button class="btn" onclick="_ligaShowBracket('final','ligaChampScreen')">🏆 Bracket</button>
+  </div>
+  <button class="btn btn-primary btn-lg" onclick="_ligaGoToMenu()">Menú principal</button>
+</div>
+
+<!-- Pantalla de campeón -->
+<div class="screen" id="partyChampScreen">
+  <div class="party-end-trophy">🏆</div>
+  <div class="fiesta-title">¡CAMPEÓN DEL MUNDO!</div>
+  <div class="fiesta-sub" id="partyChampSub" style="max-width:420px;text-align:center;line-height:1.7;margin-bottom:.8rem"></div>
+  <div id="partyChampRoute" style="font-size:10px;color:var(--text-dim);max-width:340px;text-align:center;line-height:1.9;margin-bottom:1rem"></div>
+  <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem">
+    <button class="btn" onclick="_partyShowHist('partyChampScreen')">📋 Historial</button>
+    <button class="btn" onclick="_partyShowBracketFromElim('partyChampScreen')">🏆 Bracket</button>
+  </div>
+  <button class="btn btn-primary btn-lg" onclick="_partyGoToMenu()">Menú principal</button>
+</div>
+
+<!-- ══════════ Navegación principal (pager lateral) ══════════ -->
+<nav id="mainNav">
+  <button class="mainnav-btn" onclick="_navMain(0)"><span class="mainnav-ico">🛒</span><span class="mainnav-lbl">Tienda</span></button>
+  <button class="mainnav-btn" onclick="_navMain(1)"><span class="mainnav-ico">📋</span><span class="mainnav-lbl">Misiones</span></button>
+  <button class="mainnav-btn mainnav-home" onclick="_navMain(2)"><span class="mainnav-ico">🏠</span><span class="mainnav-lbl">Inicio</span></button>
+  <button class="mainnav-btn" onclick="_navMain(3)"><span class="mainnav-ico">🏅</span><span class="mainnav-lbl">Logros</span></button>
+  <button class="mainnav-btn" onclick="_navMain(4)"><span class="mainnav-ico">📊</span><span class="mainnav-lbl">Stats</span></button>
+</nav>
+
+<!-- ══════════ Ajustes ══════════ -->
+<div class="settings-overlay" id="settingsOverlay" onclick="if(event.target===this)closeSettings()">
+  <div class="settings-modal">
+    <button class="settings-close" onclick="closeSettings()" aria-label="Cerrar">✕</button>
+    <div class="settings-title">⚙️ AJUSTES</div>
+
+    <div class="settings-section">MÚSICA</div>
+    <div class="settings-row">
+      <button class="settings-btn" id="setPlay" onclick="toggleAudio();_syncSettingsAudio()">▶ Reproducir</button>
+      <button class="settings-btn settings-icon" id="setMute" onclick="toggleMute();_syncSettingsAudio()" aria-label="Silenciar">🔊</button>
+    </div>
+    <div class="settings-row">
+      <span style="font-size:15px">🔈</span>
+      <input type="range" id="setVol" min="0" max="1" step="0.05" value="0.4" oninput="setVolume(this.value);_syncSettingsAudio()" style="flex:1" aria-label="Volumen música">
+    </div>
+    <div style="font-family:var(--font-title);font-size:8.5px;letter-spacing:.1em;color:var(--text-dim);margin:.4rem 0 .25rem">TEMA PRINCIPAL</div>
+    <div class="theme-selector" id="themeSelectorWrap"></div>
+
+    <div class="settings-section">EFECTOS (SFX)</div>
+    <div class="settings-row">
+      <span style="font-size:15px">🔔</span>
+      <input type="range" id="setSfxVol" min="0" max="1" step="0.05" value="1" oninput="setSfxVolume(this.value);_syncSettingsAudio()" style="flex:1" aria-label="Volumen efectos">
+      <button class="settings-btn settings-icon" id="setSfxMute" onclick="toggleSfxMute();_syncSettingsAudio()" aria-label="Silenciar efectos">🔊</button>
+    </div>
+
+    <div id="settingsCuenta">
+      <div class="settings-section">CUENTA</div>
+      <div class="settings-row">
+        <button class="settings-btn" onclick="exportAccount()">↑ Exportar</button>
+        <button class="settings-btn" onclick="document.getElementById('importAccountInput').click()">↓ Importar</button>
+      </div>
+      <input type="file" id="importAccountInput" accept="*/*" style="display:none" onchange="if(this.files[0])importAccount(this.files[0]);this.value=''">
+      <div id="migrate-msg" style="display:none;font-size:12px;text-align:center;padding:.25rem 0;border-radius:6px"></div>
+    </div>
+
+    <div class="settings-ver">Nexus Arcana · Beta 1.1</div>
+  </div>
+</div>
+
+
+  <script src="js/card-stats.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/match-setup.js"></script>
+  <script src="js/game-engine.js"></script>
+  <script src="js/online.js"></script>
+  <script src="js/tournament-mundial.js"></script>
+  <script src="js/tournament-liga.js"></script>
+  <script src="js/wiki.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/missions-tutorial.js"></script>
+  <script src="js/solitaire.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/casino.js"></script>
+  <script src="js/card-preview.js"></script>
+  <script src="js/deck-loadouts.js"></script>
+  <script src="js/pager.js"></script>
+  <script src="js/title-bg.js"></script>
+  <script src="js/endless-relics.js"></script>
+  <script src="js/atlas.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/draft.js"></script>
+
+
+<!-- ── Selector de Reliquias (Endless) ── -->
+<div id="relicPickerOverlay" style="display:none">
+  <div id="relicPickerModal">
+    <div class="relic-picker-title">✦ ELIGE UNA RELIQUIA ✦</div>
+    <div class="relic-picker-sub">Aparece cada 5 oleadas</div>
+    <div id="relicPickerList"></div>
+  </div>
+</div>
+
+<!-- ── Ruleta de inicio ── -->
+<div id="rouletteOverlay">
+  <div id="rouletteModal">
+    <div id="rouletteHeading">⚔ ¿QUIÉN COMIENZA? ⚔</div>
+    <div id="rouletteWheelWrap">
+      <canvas id="rouletteCanvas" width="240" height="240"></canvas>
+      <div id="roulettePointer"></div>
+    </div>
+    <div id="rouletteResult"></div>
+    <button class="btn btn-primary" id="rouletteBtn" style="display:none">Comenzar ▶</button>
+  </div>
+</div>
+
+<!-- ── Solitario Nexus ── -->
+<div id="solOverlay">
+  <div class="sol-modal">
+    <div class="sol-header">
+      <span class="sol-title">🃏 SOLITARIO NEXUS</span>
+      <span class="sol-date-lbl" id="solDateLbl"></span>
+      <button class="sol-help-btn" id="solUndoBtn" onclick="_solUndo()" title="Deshacer">↩</button>
+      <button class="sol-help-btn" onclick="_solShowHelp()" title="¿Cómo jugar?">?</button>
+      <button class="sol-close" onclick="closeSolitario()">✕</button>
+    </div>
+    <div class="sol-body" id="solBody"></div>
+  </div>
+</div>
+
+<!-- ── Casino (modal único) ── -->
+<div class="casino-overlay" id="casinoOverlay">
+  <div class="casino-modal">
+    <button class="casino-close-btn" onclick="closeCasino('casinoOverlay')">✕</button>
+
+    <!-- Lobby -->
+    <div id="casino-lobby">
+      <div class="casino-title" style="margin-bottom:.3rem">🎰 CASINO</div>
+      <div class="casino-coins-bar" style="margin-bottom:.8rem">🪙 <span id="casino-lobby-coins">0</span> monedas</div>
+      <div class="casino-grid" style="margin-bottom:0">
+        <div class="casino-game-card" onclick="openBlackjack()">
+          <div class="casino-game-icon">🃏</div>
+          <div class="casino-game-name">Blackjack Arcano</div>
+          <div class="casino-game-desc">Llega a 21★ sin pasarte</div>
+        </div>
+        <div class="casino-game-card" onclick="openDuelo()">
+          <div class="casino-game-icon">⚔️</div>
+          <div class="casino-game-name">Duelo de Cartas</div>
+          <div class="casino-game-desc">Adivina cuál tiene más ★</div>
+        </div>
+        <div class="casino-game-card" style="min-width:100%;flex-basis:100%" onclick="openParOImpar()">
+          <div class="casino-game-icon">🎲</div>
+          <div class="casino-game-name">Par o Impar</div>
+          <div class="casino-game-desc">Adivina paridad de las cartas del rival</div>
+        </div>
+        <div class="casino-game-card" onclick="openDiscoNexus()">
+          <div class="casino-game-icon">🌀</div>
+          <div class="casino-game-name">Disco Nexus</div>
+          <div class="casino-game-desc">Apuesta a la rareza que saldrá</div>
+        </div>
+        <div class="casino-game-card" onclick="openTriadaArcana()">
+          <div class="casino-game-icon">✨</div>
+          <div class="casino-game-name">Tríada Arcana</div>
+          <div class="casino-game-desc">Alinea 3 rarezas y gana grande</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blackjack -->
+    <div id="casino-bj" style="display:none;width:100%;align-items:center;flex-direction:column;gap:.7rem">
+      <div style="display:flex;align-items:center;width:100%;gap:.4rem">
+        <button class="casino-close-btn" style="position:static;font-size:13px" onclick="casinoBack()">‹</button>
+        <div class="casino-title" style="flex:1;text-align:center">🃏 BLACKJACK ARCANO</div>
+      </div>
+      <div class="casino-coins-bar">🪙 <span id="bj-coins">0</span> monedas</div>
+      <div class="bj-area" id="bj-dealer-area">
+        <div class="bj-hand-label">CRUPIER</div>
+        <div class="bj-cards" id="bj-dealer-cards"></div>
+        <div class="bj-total">Total: <span id="bj-dealer-total">?</span>★</div>
+      </div>
+      <div class="bj-area" id="bj-player-area">
+        <div class="bj-hand-label">TU MANO</div>
+        <div class="bj-cards" id="bj-player-cards"></div>
+        <div class="bj-total">Total: <span id="bj-player-total">?</span>★</div>
+      </div>
+      <div class="casino-result" id="bj-result"></div>
+      <div style="font-size:10px;color:var(--text-muted)">Apuesta</div>
+      <div class="casino-bet-row" id="bj-bet-row"></div>
+      <div style="display:flex;gap:.5rem;margin-top:.2rem" id="bj-bet-actions"></div>
+      <div class="bj-actions" id="bj-play-actions" style="display:none">
+        <button class="btn btn-primary" style="font-size:12px" onclick="bjHit()">Pedir carta</button>
+        <button class="btn" style="font-size:12px" onclick="bjStand()">Plantarse</button>
+      </div>
+    </div>
+
+    <!-- Duelo -->
+    <div id="casino-duelo" style="display:none;width:100%;align-items:center;flex-direction:column;gap:.7rem">
+      <div style="display:flex;align-items:center;width:100%;gap:.4rem">
+        <button class="casino-close-btn" style="position:static;font-size:13px" onclick="casinoBack()">‹</button>
+        <div class="casino-title" style="flex:1;text-align:center">⚔️ DUELO DE CARTAS</div>
+      </div>
+      <div class="casino-coins-bar">🪙 <span id="duelo-coins">0</span> monedas</div>
+      <div class="duelo-cards">
+        <div class="duelo-card-slot">
+          <canvas class="duelo-card-face selectable" id="duelo-left" onclick="dueloSelect('left')" width="80" height="100"></canvas>
+          <div class="duelo-card-name" id="duelo-left-name" style="display:none"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:.5rem">
+          <div class="duelo-vs">VS</div>
+          <button class="duelo-tie-btn" id="duelo-tie-btn" onclick="dueloSelect('tie')">Empate</button>
+        </div>
+        <div class="duelo-card-slot">
+          <canvas class="duelo-card-face selectable" id="duelo-right" onclick="dueloSelect('right')" width="80" height="100"></canvas>
+          <div class="duelo-card-name" id="duelo-right-name" style="display:none"></div>
+        </div>
+      </div>
+      <div class="casino-result" id="duelo-result"></div>
+      <div style="font-size:10px;color:var(--text-muted)">Apuesta</div>
+      <div class="casino-bet-row" id="duelo-bet-row"></div>
+      <div style="display:flex;gap:.5rem;margin-top:.2rem">
+        <button class="btn btn-primary" style="font-size:12px" id="duelo-confirm-btn" onclick="dueloConfirm()">Confirmar ▶</button>
+        <button class="btn" style="font-size:12px;display:none" id="duelo-next-btn" onclick="dueloNext()">Siguiente ▶</button>
+      </div>
+    </div>
+
+    <!-- Par o Impar -->
+    <div id="casino-poi" style="display:none;width:100%;align-items:center;flex-direction:column;gap:.6rem">
+      <div style="display:flex;align-items:center;width:100%;gap:.4rem">
+        <button class="casino-close-btn" style="position:static;font-size:13px" onclick="casinoBack()">‹</button>
+        <div class="casino-title" style="flex:1;text-align:center">🎲 PAR O IMPAR</div>
+      </div>
+      <div id="poi-stats-bar" style="display:none;justify-content:space-between;align-items:center;width:100%;padding:0 .3rem">
+        <div style="font-size:11px;color:var(--text-muted)">Tú: <span id="poi-player-chips" style="color:#c9a84c;font-weight:700">10</span> fichas</div>
+        <div style="font-size:10px;color:var(--text-muted);text-align:center">Ronda <span id="poi-round">1</span> · Apuesta <span id="poi-bet">1</span>🎯</div>
+        <div style="font-size:11px;color:var(--text-muted)">Rival: <span id="poi-bot-chips" style="color:#c9a84c;font-weight:700">10</span> fichas</div>
+      </div>
+
+      <div id="poi-center" style="display:flex;flex-direction:column;align-items:center;gap:.3rem">
+        <div id="poi-turn-label" style="font-size:9px;color:var(--text-muted);letter-spacing:.1em;text-align:center"></div>
+        <canvas id="poi-shown-card" width="70" height="90" style="border-radius:8px;display:none"></canvas>
+        <div id="poi-shown-stars" style="font-size:12px;color:#c9a84c;font-weight:700;display:none"></div>
+      </div>
+
+      <div id="poi-rival-guess" style="display:none;font-size:12px;color:var(--text-muted);text-align:center"></div>
+      <div class="casino-result" id="poi-result"></div>
+
+      <div id="poi-hand-area" style="display:none;flex-direction:column;align-items:center;gap:.4rem;width:100%">
+        <div style="font-size:9px;color:var(--text-muted);letter-spacing:.1em">ELIGE UNA CARTA DE TU MANO</div>
+        <div id="poi-hand-cards" style="display:flex;flex-wrap:wrap;gap:.3rem;justify-content:center;max-width:100%;padding:0 .3rem"></div>
+      </div>
+
+      <div id="poi-guess-btns" style="display:none;gap:.6rem">
+        <button class="btn btn-primary" style="font-size:13px;padding:.5rem 1.5rem" onclick="poiGuess('par')">Par</button>
+        <button class="btn" style="font-size:13px;padding:.5rem 1.5rem" onclick="poiGuess('impar')">Impar</button>
+      </div>
+
+      <div id="poi-next-wrap" style="display:none">
+        <button class="btn btn-primary" style="font-size:12px" id="poi-next-btn" onclick="poiNext()">Siguiente ronda ▶</button>
+      </div>
+    </div>
+
+    <!-- Disco Nexus -->
+    <div id="casino-disco" style="display:none;width:100%;align-items:center;flex-direction:column;gap:.7rem">
+      <div style="display:flex;align-items:center;width:100%;gap:.4rem">
+        <button class="casino-close-btn" style="position:static;font-size:13px" onclick="casinoBack()">‹</button>
+        <div class="casino-title" style="flex:1;text-align:center">🌀 DISCO NEXUS</div>
+      </div>
+      <div class="casino-coins-bar">🪙 <span id="disco-coins">0</span> monedas</div>
+      <canvas id="disco-canvas" width="200" height="200" style="border-radius:50%;box-shadow:0 0 24px rgba(123,95,212,.4)"></canvas>
+      <div class="casino-result" id="disco-result"></div>
+      <div style="font-size:9px;color:var(--text-muted);letter-spacing:.1em">APUESTA A</div>
+      <div id="disco-bet-type" style="display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center">
+        <button class="casino-bet-btn" data-dtype="color" data-dval="Normal"   onclick="discoSelectBet('color','Normal')"   style="border-color:#5a90d9;color:#5a90d9">Normal</button>
+        <button class="casino-bet-btn" data-dtype="color" data-dval="Raro"     onclick="discoSelectBet('color','Raro')"     style="border-color:#4ac97a;color:#4ac97a">Raro</button>
+        <button class="casino-bet-btn" data-dtype="color" data-dval="Épico"    onclick="discoSelectBet('color','Épico')"    style="border-color:#EF9F27;color:#EF9F27">Épico</button>
+        <button class="casino-bet-btn" data-dtype="color" data-dval="Mítico"   onclick="discoSelectBet('color','Mítico')"   style="border-color:#9b59f7;color:#9b59f7">Mítico</button>
+        <button class="casino-bet-btn" data-dtype="color" data-dval="Especial" onclick="discoSelectBet('color','Especial')" style="border-color:#f76eb2;color:#f76eb2">Especial ×7</button>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted)">Apuesta</div>
+      <div class="casino-bet-row" id="disco-bet-row"></div>
+      <button class="btn btn-primary" id="disco-spin-btn" style="font-size:12px;margin-top:.2rem" onclick="discoSpin()" disabled>Girar ▶</button>
+    </div>
+
+    <!-- Tríada Arcana -->
+    <div id="casino-triada" style="display:none;width:100%;align-items:center;flex-direction:column;gap:.7rem">
+      <div style="display:flex;align-items:center;width:100%;gap:.4rem">
+        <button class="casino-close-btn" style="position:static;font-size:13px" onclick="casinoBack()">‹</button>
+        <div class="casino-title" style="flex:1;text-align:center">✨ TRÍADA ARCANA</div>
+      </div>
+      <div class="casino-coins-bar">🪙 <span id="triada-coins">0</span> monedas</div>
+      <div id="triada-reels" style="display:flex;gap:.5rem;justify-content:center;margin:.3rem 0">
+        <div class="triada-reel" id="triada-r0"><div class="triada-reel-name" id="triada-n0">?</div><div class="triada-reel-rar" id="triada-v0"></div></div>
+        <div class="triada-reel" id="triada-r1"><div class="triada-reel-name" id="triada-n1">?</div><div class="triada-reel-rar" id="triada-v1"></div></div>
+        <div class="triada-reel" id="triada-r2"><div class="triada-reel-name" id="triada-n2">?</div><div class="triada-reel-rar" id="triada-v2"></div></div>
+      </div>
+      <div style="font-size:9px;color:var(--text-muted);text-align:center;line-height:1.6">
+        3 cartas misma rareza: Normal×1.5 · Raro×3 · Épico×6<br>Mítico×12 · Especial×25 · Legendario×50<br>
+        <span style="color:var(--text-dim)">2 de la misma rareza: devuelve apuesta</span>
+      </div>
+      <div class="casino-result" id="triada-result"></div>
+      <div style="font-size:10px;color:var(--text-muted)">Apuesta</div>
+      <div class="casino-bet-row" id="triada-bet-row"></div>
+      <button class="btn btn-primary" id="triada-spin-btn" style="font-size:12px;margin-top:.2rem" onclick="triadaSpin()">Girar ▶</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Overlay de conexión perdida ── -->
+<!-- ── Coin toast ── -->
+<div id="coin-toast" style="position:fixed;top:-70px;left:50%;transform:translateX(-50%);z-index:9999;background:#0b0b1a;border:.5px solid rgba(201,168,76,.55);border-radius:999px;padding:.5rem 1.1rem;display:flex;align-items:center;gap:.5rem;box-shadow:0 4px 20px rgba(0,0,0,.7);transition:top .35s ease;pointer-events:none;white-space:nowrap">
+  <span style="font-size:18px">🪙</span>
+  <span id="coin-toast-amount" style="font-size:14px;font-weight:700;color:#c9a84c"></span>
+  <span style="font-size:11px;color:rgba(201,168,76,.7)">monedas</span>
+</div>
+
+<!-- ── Card unlock toast ── -->
+<div id="card-unlock-toast" style="position:fixed;top:-90px;left:50%;transform:translateX(-50%);z-index:9998;background:#0b0b1a;border:.5px solid rgba(201,168,76,.55);border-radius:12px;padding:.55rem 1rem;display:flex;align-items:center;gap:.7rem;box-shadow:0 4px 24px rgba(0,0,0,.7);transition:top .35s ease;min-width:200px;max-width:290px;pointer-events:none">
+  <span style="font-size:22px;flex-shrink:0">🃏</span>
+  <div>
+    <div style="font-size:8px;letter-spacing:.12em;color:rgba(180,160,255,.8);font-family:var(--font-title);margin-bottom:2px">CARTA DESBLOQUEADA</div>
+    <div style="display:flex;align-items:baseline;gap:.35rem">
+      <span id="cut-card-name" style="font-size:12px;font-weight:700;color:var(--text)"></span>
+      <span id="cut-card-stars" style="font-size:10px;font-weight:700"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Achievement unlock toast ── -->
+<div id="ach-toast" style="position:fixed;top:-90px;left:50%;transform:translateX(-50%);z-index:9999;background:#0b0b1a;border:.5px solid rgba(201,168,76,.55);border-radius:12px;padding:.65rem 1rem;display:flex;align-items:center;gap:.7rem;box-shadow:0 4px 24px rgba(0,0,0,.7);transition:top .35s ease;min-width:220px;max-width:300px;pointer-events:none">
+  <span id="ach-toast-icon" style="font-size:26px;flex-shrink:0"></span>
+  <div>
+    <div style="font-size:8.5px;letter-spacing:.12em;color:rgba(201,168,76,.85);font-family:var(--font-title);margin-bottom:2px">LOGRO DESBLOQUEADO</div>
+    <div id="ach-toast-name" style="font-size:12px;font-weight:700;color:var(--text)"></div>
+  </div>
+</div>
+
+<div id="infoModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(4,4,12,0.88);align-items:center;justify-content:center;font-family:var(--font-title)">
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.6rem 1.4rem;max-width:300px;width:90%;display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center">
+    <div id="infoModalIcon" style="font-size:1.8rem"></div>
+    <div id="infoModalTitle" style="font-size:1rem;font-weight:700;color:var(--text)"></div>
+    <div id="infoModalDesc" style="font-size:.82rem;color:var(--text-muted);line-height:1.5"></div>
+    <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('infoModal').style.display='none'">Aceptar</button>
+  </div>
+</div>
+
+<div id="abandonModal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(4,4,12,0.88);align-items:center;justify-content:center;font-family:var(--font-title)">
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.6rem 1.4rem;max-width:300px;width:90%;display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center">
+    <div style="font-size:1.3rem">⚔️</div>
+    <div style="font-size:1rem;font-weight:700;color:var(--text)" id="abandonModalTitle">¿Abandonar la partida?</div>
+    <div style="font-size:.82rem;color:var(--text-muted);line-height:1.5" id="abandonModalDesc">Se perderá la partida actual.</div>
+    <button class="btn btn-danger" style="width:100%" id="abandonModalBtnLobby" onclick="_doAbandonToLobby()" hidden>Ir al Lobby</button>
+    <button class="btn btn-danger" style="width:100%" id="abandonModalBtnLeave" onclick="_doAbandon()">Abandonar partida</button>
+    <button class="btn" style="width:100%;opacity:.6;font-size:.82rem" onclick="document.getElementById('abandonModal').style.display='none'">Cancelar</button>
+  </div>
+</div>
+
+<div id="resetStatsModal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(4,4,12,0.88);align-items:center;justify-content:center;font-family:var(--font-title)">
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.6rem 1.4rem;max-width:300px;width:90%;display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center">
+    <div style="font-size:1.3rem">🗑</div>
+    <div style="font-size:1rem;font-weight:700;color:var(--text)">¿Resetear estadísticas?</div>
+    <div style="font-size:.82rem;color:var(--text-muted);line-height:1.5">Se borrarán todas las estadísticas, logros y progreso. Esta acción no se puede deshacer.</div>
+    <button class="btn btn-danger" style="width:100%" onclick="doResetStats()">Resetear todo</button>
+    <button class="btn" style="width:100%;opacity:.6;font-size:.82rem" onclick="document.getElementById('resetStatsModal').style.display='none'">Cancelar</button>
+  </div>
+</div>
+
+<div id="exitAppModal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(4,4,12,0.88);align-items:center;justify-content:center;font-family:var(--font-title)">
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.6rem 1.4rem;max-width:300px;width:90%;display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center">
+    <div style="font-size:1.3rem">🚪</div>
+    <div style="font-size:1rem;font-weight:700;color:var(--text)">¿Salir del juego?</div>
+    <button class="btn btn-danger" style="width:100%" onclick="_doExitApp()">Salir</button>
+    <button class="btn" style="width:100%;opacity:.6;font-size:.82rem" onclick="document.getElementById('exitAppModal').style.display='none'">Cancelar</button>
+  </div>
+</div>
+
+<div id="tourneyExitModal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(4,4,12,0.88);align-items:center;justify-content:center;font-family:var(--font-title)">
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.6rem 1.4rem;max-width:300px;width:90%;display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center">
+    <div style="font-size:1.3rem;color:var(--accent)">⚠️</div>
+    <div id="tourneyExitTitle" style="font-size:1rem;font-weight:700;color:var(--text)">Salir del Torneo</div>
+    <div style="font-size:.82rem;color:var(--text-muted);line-height:1.5">
+      ¿Qué quieres hacer?
+    </div>
+    <button class="btn btn-danger" style="width:100%" onclick="_tourneyExitAbandon()">🗑️ Abandonar (perder progreso)</button>
+    <button class="btn btn-secondary" style="width:100%" onclick="_tourneyExitSave()">💾 Salir y guardar progreso</button>
+    <button class="btn" style="width:100%;opacity:.6;font-size:.82rem" onclick="_hideTourneyExitModal()">Cancelar</button>
+  </div>
+</div>
+
+<div id="reconnectingBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9997;background:rgba(30,20,60,0.93);border-bottom:1px solid rgba(139,92,246,.4);padding:.45rem 1rem;text-align:center;font-family:var(--font-title);font-size:11px;letter-spacing:.12em;color:#b49af0;pointer-events:none">
+  <span id="reconnectingDots">⟳</span> RECONECTANDO…
+</div>
+
+<div id="connLostOverlay" style="
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(4,4,12,0.92);
+  display:none;align-items:center;justify-content:center;flex-direction:column;gap:1.2rem;
+  font-family:var(--font-title)">
+  <div style="font-size:1.5rem;color:#e08080;text-shadow:0 0 18px #e0808088">⚡ CONEXIÓN PERDIDA</div>
+  <div style="font-size:.95rem;color:var(--text-muted);text-align:center;max-width:280px;line-height:1.6">
+    Se interrumpió la conexión con el servidor.<br>No se pueden continuar las acciones del juego.
+  </div>
+  <button class="btn btn-primary" onclick="connLostGoMenu()" style="margin-top:.5rem">← Volver al menú</button>
+</div>
+</body>
+</html>
+
